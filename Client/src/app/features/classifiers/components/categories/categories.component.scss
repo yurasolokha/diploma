@@ -1,0 +1,30 @@
+@import 'text';
+@import 'variables';
+@import 'components';
+
+.content-wrapper{
+  display: flex;
+  flex-flow: column;
+  height: stretch;
+  padding: 30px 20px;
+  background-color: $secondary-background;
+  overflow-y: scroll;
+
+  .breadcrumbs{
+    @extend %breadcrumbs;
+  }
+
+  .header{
+    @extend %header;
+  }
+
+  .body-wrapper{
+    padding-top: 20px;
+  }
+
+  .name {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

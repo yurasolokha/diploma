@@ -1,0 +1,113 @@
+@import 'text';
+@import 'variables';
+@import 'buttons';
+
+.content-wrapper{
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, $secondary-background-reverse 70%, #fff 50%);
+
+  .header-wrapper{
+    padding: 36px 0 0;
+
+    .header{
+      @extend %primary-font-bold;
+
+      margin: 0;
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 26px;
+      color: $primary-color-reverse;
+      white-space: nowrap;
+    }
+
+    .sub-header{
+      @extend %primary-font-bold;
+      
+      margin: 0;
+      text-align: center;
+      font-size: 20px;
+      color: $primary-color-reverse;
+      white-space: nowrap;
+      letter-spacing: 2px;
+    }
+  }
+
+  .form {
+    width: 80%;
+    height: 60%;
+    margin: 40px auto 0;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0,0,0,0.25);
+    border-radius: 10px;
+    display: flex;
+    flex-flow: column;
+    gap: 20px;
+    padding-top: 75px;
+
+    .field-wrapper{
+      display: flex;
+      flex-flow: column;
+
+      .caption{
+        @extend %primary-font-bold;
+
+        font-size: $font-size-large;
+        margin-bottom: 3px
+      }
+
+      .field{
+        @extend %primary-font;
+
+        font-size: $font-size-large;
+        padding: 4px 40px 4px 12px;
+        border-radius: 4px;
+        border: solid 1px $secondary-background-reverse;
+        transition-duration: 200ms;
+
+        &:focus{
+          outline: none;
+          border: solid 1px change-color($secondary-background-reverse, $alpha: 0.6);
+        }
+      }
+
+      .icon{
+        position: relative;
+        margin-top: -26px;
+        margin-left: auto;
+        margin-right: 10px;
+      }
+
+      .incorrect-userdata {
+        @extend %primary-font;
+
+        color: #393e50;
+        margin: 7px 0 0;
+        cursor: pointer;
+      }
+    }
+
+    .input-error{
+      .field{
+        border: solid 1px $error-color;
+      }
+    }
+
+    .forgot-password{
+      @extend %primary-font;
+
+      color: #3551b6;
+      margin-left: auto;
+      margin-top: -10px;
+      cursor: pointer;
+    }
+
+    .button{
+      @extend %primary-button;
+
+      margin-top: 30px;
+      height: 35px;
+    }
+  }
+}

@@ -1,0 +1,129 @@
+<div class="content">
+  <div class="breadcrumbs" (click)="goTo('admin-panel')">
+    <mat-icon style="transform: rotate(180deg);">arrow_right_alt</mat-icon> Admin Panel
+  </div>
+
+  <div class="header">
+    <h1 class="caption"><mat-icon class="icon">supervisor_account</mat-icon>Audit Logs</h1>
+    <p class="description">In this component, you can view audit logs</p>
+  </div>
+
+  <div class="body">
+    <div class="audit-log-section">
+      <table mat-table [dataSource]="auditLogsData" class="table" matSort="logsSort" matSortActive="date"
+      matSortDirection="desc" matSort recycleRows>
+        <ng-container matColumnDef="primaryKey">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 10%;" class="header-cell">
+            <div class="header-content">
+              <span>ENTITY ID</span>
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let auditLog" class="cell"
+                      matTooltipClass="tooltip" [matTooltip]="getTooltip(auditLog.primaryKey)"> {{auditLog.primaryKey}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="userId">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 10%;" class="header-cell">
+            <div class="header-content">
+              <span>USER ID</span>
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let auditLog" class="cell"
+                      matTooltipClass="tooltip" [matTooltip]="getTooltip(auditLog.userId)"> {{auditLog.userId}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="userName">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 10%;" class="header-cell">
+            <div class="header-content">
+              <span>USER NAME</span>
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let auditLog" class="cell"> {{auditLog.userName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 10%" class="header-cell"> 
+            <div class="header-content">
+              <span>ACTION TYPE</span>
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let auditLog" class="cell"> {{auditLog.type}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tableName">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 10%" class="header-cell">
+            <div class="header-content">
+              <span>TABLE NAME</span>
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let auditLog" class="cell"> {{auditLog.tableName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 15%;" class="header-cell">
+            <div class="header-content">
+              <span>DATE</span>
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let auditLog" class="cell"> {{auditLog.date | date:DataConvention.DateTimeExtendedFormat}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="newValues">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: auto;" class="header-cell">
+            <div class="header-content">
+              <span>NEW VALUES</span>
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let auditLog" class="cell" 
+                      matTooltipClass="tooltip" [matTooltip]="getTooltip(auditLog.newValues)"> {{auditLog.newValues}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="oldValues">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: auto;" class="header-cell">
+            <div class="header-content">
+              <span>OLD VALUES</span>
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let auditLog" class="cell"
+                      matTooltipClass="tooltip" [matTooltip]="getTooltip(auditLog.oldValues)"> {{auditLog.oldValues}} </td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="affectedColumns">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: auto;" class="header-cell"><div class="header-content">
+            <span>AFFECTED COLUMNS</span>
+          </div>
+        </th>
+          <td mat-cell *matCellDef="let auditLog" class="cell"> {{auditLog.affectedColumns}} </td>
+        </ng-container> -->
+
+        <tr class="table-header" mat-header-row *matHeaderRowDef="auditLogTableColumns"></tr>
+        <tr class="table-row" mat-row *matRowDef="let row; columns: auditLogTableColumns;" (contextmenu)="onRightClick($event, row, menuActions)"></tr>
+        
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      
+      <div *ngIf="!auditLogsData?.data?.length" class="logs-empty">
+        <mat-icon class="icon">list</mat-icon>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<app-loader *ngIf="isLoading"></app-loader>
+
+<div style="visibility: hidden; position: fixed;"
+  [style.left]="menuTopLeftPosition.x"
+  [style.top]="menuTopLeftPosition.y"
+  [matMenuTriggerFor]="contextMenu"></div>
+
+<mat-menu #contextMenu="matMenu">
+  <ng-template matMenuContent let-item="item">
+    <button *ngFor="let action of item.actions" mat-menu-item (click)="action.action(item.data)">
+      <mat-icon>{{action.icon}}</mat-icon>
+      <span>{{action.caption}}</span>
+    </button>
+  </ng-template>
+</mat-menu>

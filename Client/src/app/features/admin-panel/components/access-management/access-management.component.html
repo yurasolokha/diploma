@@ -1,0 +1,40 @@
+<div
+  class="content-wrapper">
+
+  <mat-tab-group
+    *ngIf="!isLoading"
+    [animationDuration]="200"
+    [selectedIndex]="selectedTabIndex"
+    (selectedIndexChange)="tabIndexChangeHandler($event)">
+
+    <mat-tab *ngFor="let tab of tabs; let i = index">
+      <ng-template mat-tab-label>{{tab.label}}</ng-template>
+      <div
+       *ngIf="tab.data.value.length > 0 && !isTabLoading"
+       class="table-wrapper">
+        <app-access-table
+          [data]="tab.data.value"
+          [users]="tab.users.value"
+          [frozenColumns]="tab.frozenColumns"
+          (updateHandler)="tab.updateHandler($event)"
+        ></app-access-table>
+      </div>
+
+      <div 
+       *ngIf="tab.data.value.length <= 0 && !isTabLoading"
+       class="empty-icon-wrapper">
+        <img class="icon"
+        src="assets/icons/empty-icon.png" />
+      </div>
+      
+      <div *ngIf="isTabLoading" class="loader-wrapper">
+        <app-loader position="static"></app-loader>
+      </div>
+      
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<ng-container *ngIf="isLoading">
+  <app-loader position="static"></app-loader>
+</ng-container>

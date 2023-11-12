@@ -1,0 +1,16 @@
+@import 'text';
+@import 'variables';
+
+.content-wrapper{
+  background-color: $secondary-background;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-flow: column;
+
+  app-transactions-list {
+    flex-grow: 1;
+  }
+}

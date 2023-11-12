@@ -1,0 +1,47 @@
+@import "variables";
+@import "text";
+
+%button {
+  outline: none;
+  cursor: pointer;
+  padding: 3px 12px;
+  border-radius: 3px;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+%primary-button {
+  @extend %primary-font;
+  @extend %button;
+
+  border: solid 1px $primary-color;
+  color: $primary-color;
+  background-color: $primary-color-reverse;
+
+  &:not(:disabled):hover{
+    background-color: change-color($primary-color, $alpha: 0.015);
+  }
+
+  &:disabled {
+    background-color: change-color($primary-color, $alpha: 0.015);
+  }
+}
+
+%primary-button-filled {
+  @extend %primary-font;
+  @extend %button;
+
+  border: solid 1px $primary-color-reverse;
+  color: $primary-color-reverse;
+  background-color: $primary-color;
+
+  &:not(:disabled):hover{
+    background-color: change-color($primary-color, $alpha: 0.825);
+  }
+  
+  &:disabled {
+    background-color: change-color($primary-color, $alpha: 0.825);
+  }
+}

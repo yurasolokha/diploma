@@ -1,0 +1,207 @@
+<mat-expansion-panel #panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-icon>filter_list</mat-icon>
+      <span style="margin-left: 10px">Filter</span>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <form [formGroup]="form" class="form">
+    <div class="form-row">
+      <button mat-icon-button color="primary" (click)="changeMonthPeriod(0)">
+        <mat-icon style="font-size: 20px">remove</mat-icon>
+      </button>
+
+      <div
+        class="date-picker"
+        [ngClass]="{
+          'input-error':
+            form.controls['from'].dirty && form.controls['from'].invalid
+        }"
+      >
+        <input
+          matInput
+          [matDatepicker]="picker1"
+          formControlName="from"
+          (wheel)="changeDateDay($event, 'from')"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </div>
+
+      <div
+        class="date-picker"
+        [ngClass]="{
+          'input-error':
+            form.controls['to'].dirty && form.controls['to'].invalid
+        }"
+      >
+        <input
+          matInput
+          [matDatepicker]="picker2"
+          formControlName="to"
+          (wheel)="changeDateDay($event, 'to')"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker2"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </div>
+
+      <button mat-icon-button color="primary" (click)="changeMonthPeriod(1)">
+        <mat-icon style="font-size: 20px">add</mat-icon>
+      </button>
+    </div>
+
+    <div class="form-row">
+      <div
+        class="field-wrapper"
+        [ngClass]="{
+          'input-error':
+            form.controls['allowedTypes'].dirty &&
+            form.controls['allowedTypes'].invalid
+        }"
+      >
+        <label class="caption">Transaction Types</label>
+        <mat-select class="select" formControlName="allowedTypes" multiple>
+          <mat-option *ngFor="let type of transactionTypes" [value]="type">{{
+            type
+          }}</mat-option>
+        </mat-select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div
+        class="field-wrapper"
+        [ngClass]="{
+          'input-error':
+            form.controls['accounts'].dirty && form.controls['accounts'].invalid
+        }"
+      >
+        <label class="caption">Accounts</label>
+        <app-custom-tree-select
+          *ngIf="accounts"
+          class="select account-select"
+          [multiple]="true"
+          [allowItemAsFolder]="false"
+          [data]="accounts"
+          [selected]="form.controls['accounts'].value"
+          (selectedChange)="formValueChange('accounts', $event)"
+        >
+          <ng-template appTemplateName="item" let-item
+            ><span class="name"
+              >{{ item.name }} - {{ item.currency.code }}</span
+            ></ng-template
+          >
+          <ng-template appTemplateName="folder" let-item
+            ><span class="name">{{ item.name }}</span></ng-template
+          >
+        </app-custom-tree-select>
+      </div>
+    </div>
+
+    <div
+      class="field-wrapper"
+      *ngFor="let control of classifierControls"
+      [ngClass]="{
+        'input-error':
+          form.controls[control.name]?.dirty &&
+          form.controls[control.name]?.invalid
+      }"
+    >
+      <label class="caption">{{ control.key.pluralName }}</label>
+      <app-custom-tree-select
+        *ngIf="categories(control) as categories"
+        class="select categories-select"
+        [multiple]="true"
+        [allowItemAsFolder]="true"
+        [data]="categories"
+        [selected]="control.control.value"
+        (selectedChange)="formValueChange(control.name, $event)"
+      >
+        <ng-template appTemplateName="item" let-item
+          ><span class="name">{{ item.name }}</span></ng-template
+        >
+        <ng-template appTemplateName="folder" let-item
+          ><span class="name">{{ item.name }}</span></ng-template
+        >
+      </app-custom-tree-select>
+    </div>
+
+    <div
+      class="field-wrapper"
+      [ngClass]="{
+        'input-error':
+          form.controls['comment'].dirty && form.controls['comment'].invalid
+      }"
+    >
+      <label class="caption">Comment</label>
+      <input class="field" formControlName="comment" type="text" matInput />
+    </div>
+
+    <div
+      class="input-data-error"
+      *ngIf="
+        (form.controls['from'].dirty && form.controls['from'].invalid) ||
+        (form.controls['to'].dirty && form.controls['to'].invalid)
+      "
+    >
+      <span>Invalid date format</span>
+    </div>
+  </form>
+
+  <div class="footer" style="margin: 20px 0; padding-top: 10px">
+    <button class="reset-button" (click)="resetFilter(); panel.close()">
+      Clear filter
+    </button>
+    <button class="apply-button" (click)="applyFilter(); panel.close()">
+      Apply filter
+    </button>
+  </div>
+</mat-expansion-panel>
+
+<mat-chip-list class="chip-list">
+  <mat-chip
+    *ngFor="let appliedFilter of appliedFilters"
+    class="chip"
+    color="primary"
+    [removable]="true"
+    (removed)="removeFilter(appliedFilter.id)"
+  >
+    <div
+      class="chip-description-wrapper"
+      (click)="appliedFilter?.clickAction($event)"
+    >
+      {{ appliedFilter.description }}
+    </div>
+    <mat-icon matChipRemove>cancel</mat-icon>
+  </mat-chip>
+</mat-chip-list>
+
+<div
+  *ngIf="!isHidden"
+  [style.left.px]="detailsPosition.x"
+  [style.top.px]="detailsPosition.y"
+  class="chip-details"
+  (appClickOutside)="detailsClosed()"
+>
+  <mat-chip-list class="chip-list">
+    <mat-chip
+      *ngFor="let account of filter.accounts"
+      class="chip"
+      color="primary"
+      [removable]="true"
+      (removed)="removeAccountFilter(account.id)"
+    >
+      <div class="chip-description-wrapper">
+        {{ account.name }}
+      </div>
+      <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+  </mat-chip-list>
+</div>

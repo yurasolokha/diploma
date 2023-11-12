@@ -1,0 +1,20 @@
+<div class="content">
+  <div class="grid">
+    <app-card *ngFor="let card of cards" [componentModel]="card" (click)="goTo(card)" (contextmenu)="onRightClick($event, card, menuActions)"></app-card>
+    <app-add-new-card *ngIf="allowActions" (onClick)="addClassifier()"></app-add-new-card>
+  </div>
+</div>
+
+<div style="visibility: hidden; position: fixed;"
+  [style.left]="menuTopLeftPosition.x"
+  [style.top]="menuTopLeftPosition.y"
+  [matMenuTriggerFor]="contextMenu"></div>
+
+<mat-menu #contextMenu="matMenu">
+  <ng-template matMenuContent let-item="item">
+    <button *ngFor="let action of item.actions" mat-menu-item (click)="action.action(item.data)">
+      <mat-icon>{{action.icon}}</mat-icon>
+      <span>{{action.caption}}</span>
+    </button>
+  </ng-template>
+</mat-menu>

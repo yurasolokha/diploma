@@ -1,0 +1,49 @@
+@import 'forms';
+@import 'buttons';
+
+.form {
+  @extend %primary-form;
+  width: 550px;
+}
+
+.footer {
+  display: flex;
+  gap: 25px;
+  margin-top: 7px;
+  padding-top: 7px;
+  border-top: 1px solid gray;
+
+  .apply-button{
+    @extend %primary-button-filled;
+
+    height: 30px;
+    width: 70px;
+    width: 120px;
+  }
+
+  .reset-button{
+    @extend %primary-button;
+
+    height: 30px;
+    width: 70px;
+    width: 120px;
+  }
+}
+
+.input-data-error {
+  color: $error-color;
+  margin-top: 15px;
+  margin-left: 50px;
+}
+
+.chip-list{
+  ::ng-deep{
+    .mat-chip-list-wrapper{
+      margin-top: 5px;
+      margin-left: 5px;
+      .mat-chip {
+        background-color: #1F1E29;
+      }
+    }
+  }
+}

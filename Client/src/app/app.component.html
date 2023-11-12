@@ -1,0 +1,11 @@
+<div class="content">
+  <div class="nav-bar">
+    <app-nav-bar *ngIf="isLogged((userStore$ | async))"></app-nav-bar>
+  </div>
+
+  <div class="body-wrapper" *ngIf="isLoginPage() || isLogged((userStore$ | async))">
+    <router-outlet></router-outlet>
+  </div>
+
+  <app-loader *ngIf="!isLoginPage() && !isLogged((userStore$ | async))"></app-loader>
+</div>

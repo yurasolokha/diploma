@@ -1,0 +1,54 @@
+@import "imports.scss";
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+.mat-tooltip {
+  font-size: 15px !important;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #11101d;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #11101d;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.account-select,
+.custom-select,
+.categories-select {
+  .mat-select-placeholder {
+    color: #11101d;
+  }
+}
+
+.c-pointer {
+  cursor: pointer;
+}
+
+.underline-hover:hover {
+  text-decoration: underline;
+}

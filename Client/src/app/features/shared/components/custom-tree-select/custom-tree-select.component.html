@@ -1,0 +1,62 @@
+<mat-select panelClass="custom-select-panel" [placeholder]="selectedAsString">
+  <mat-option></mat-option>
+  <footer>
+    <div class="dropdown-wrapper" *ngIf="data">
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+        <mat-tree-node
+          *matTreeNodeDef="let node"
+          matTreeNodePadding
+          class="node"
+        >
+          <button
+            mat-icon-button
+            disabled
+            style="width: 37px; height: 37px"
+          ></button>
+          <mat-checkbox
+            [checked]="checklistSelection.isSelected(node)"
+            (change)="selectNode(node)"
+          >
+            <ng-container
+              [ngTemplateOutlet]="viewTemplates[columns[0]]"
+              [ngTemplateOutletContext]="{ $implicit: node.data }"
+            ></ng-container>
+          </mat-checkbox>
+        </mat-tree-node>
+
+        <mat-tree-node
+          *matTreeNodeDef="let node; when: hasChild"
+          matTreeNodePadding
+          class="node"
+        >
+          <button
+            mat-icon-button
+            matTreeNodeToggle
+            style="width: 37px; height: 37px"
+          >
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{
+                treeControl.isExpanded(node) ? "expand_more" : "chevron_right"
+              }}
+            </mat-icon>
+          </button>
+          <mat-checkbox
+            [disabled]="!multiple && !allowItemAsFolder"
+            [checked]="checklistSelection.isSelected(node)"
+            [indeterminate]="
+              multiple &&
+              !allowItemAsFolder &&
+              descendantsPartiallySelected(node)
+            "
+            (change)="selectNode(node)"
+          >
+            <ng-container
+              [ngTemplateOutlet]="viewTemplates[columns[1]]"
+              [ngTemplateOutletContext]="{ $implicit: node.data }"
+            ></ng-container>
+          </mat-checkbox>
+        </mat-tree-node>
+      </mat-tree>
+    </div>
+  </footer>
+</mat-select>

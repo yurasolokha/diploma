@@ -1,0 +1,15 @@
+<div class="content">
+  <div class="header-container">
+    <h3 class="header">{{model.header}}</h3>
+    <mat-icon class="close" (click)="close()">close</mat-icon>
+  </div>
+  <div *ngIf="model.icon" class="icon-wrapper">
+    <mat-icon class="icon" [color]="model.icon.color">{{model.icon.name}}</mat-icon>
+  </div>
+  <span class="description" [ngClass]="{'center' : model.icon}" [innerText]="model.description"></span>
+
+  <div class="buttons-wrapper">
+    <button class="cancel-button" (click)="close()">Cancel</button>
+    <button class="confirm-button" (click)="close(true)">Ok</button>
+  </div>
+</div>

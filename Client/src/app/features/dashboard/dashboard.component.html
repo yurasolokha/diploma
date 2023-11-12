@@ -1,0 +1,8 @@
+<div class="content">
+  <div class="grid">
+    <app-card *ngFor="let card of cards"
+              [componentModel]="card"
+              (click)="goTo(card.link)">
+    </app-card>
+  </div>
+</div>

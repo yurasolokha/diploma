@@ -1,0 +1,24 @@
+<app-dialog-layout class="layout" [model]="model" (save)="save()" (close)="close()">
+  <form class="form" [formGroup]="form">
+    <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('singularName')}">
+      <label class="caption">Singular Name</label>
+      <input class="field" formControlName="singularName" type="text" matInput />
+      <p class="input-data-error" *ngIf="InputValidation('singularName')">Please enter valid singular name</p>
+    </div>
+
+    <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('pluralName')}">
+      <label class="caption">Plural Name</label>
+      <input class="field" formControlName="pluralName" type="text" matInput />
+      <p class="input-data-error" *ngIf="InputValidation('pluralName')">Please enter valid plural name</p>
+    </div>
+
+    <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('requiredTransactionTypes')}">
+      <label class="caption">Required in transactions</label>
+      <mat-select class="select" formControlName="requiredTransactionTypes" multiple="true">
+        <mat-option *ngFor="let transactionType of transactionTypes" [value]="transactionType">
+          {{transactionType}}
+        </mat-option>
+      </mat-select>
+    </div>
+  </form>
+</app-dialog-layout>

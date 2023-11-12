@@ -1,0 +1,25 @@
+<div class="content-wrapper">
+  <div class="breadcrumbs" (click)="goTo('currencies')">
+    <mat-icon style="transform: rotate(180deg);">arrow_right_alt</mat-icon> Currencies dashboard
+  </div>
+
+  <div class="header">
+    <h1 class="caption"><mat-icon class="icon">attach_money</mat-icon>Currencies</h1>
+    <p class="description">This module allows you to manage currencies and currency rates.</p>
+  </div>
+
+  <div class="body-wrapper">
+    <div class="currency-rates-wrapper">
+      <app-currency-rates-filter [filter]="filter" (filterChange)="filterChangeWithPageReset($event)"></app-currency-rates-filter>
+      <app-currency-rates [(filter)]="filter"></app-currency-rates>
+    </div>
+
+    <div class="currencies-wrapper">
+      <app-currency-list></app-currency-list>
+    </div>
+  </div>
+
+  <div class="footer-wrapper">
+    
+  </div>
+</div>

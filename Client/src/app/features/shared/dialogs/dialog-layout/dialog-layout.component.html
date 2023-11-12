@@ -1,0 +1,15 @@
+<div class="content">
+  <div class="header">
+    <h1 class="caption">{{model.headerCaption}}</h1>
+    <mat-icon class="icon" (click)="close.emit(false)">close</mat-icon>
+  </div>
+
+  <div class="body">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="footer">
+    <button class="save-button" (click)="save.emit(true)">Ok</button>
+    <button class="cancel-button" (click)="close.emit(false)">Cancel</button>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="content-wrapper">
+  <div class="loading-state" [class.loading-state]="dataSource.loading$ | async">
+    <table *ngIf="!!dataSource.data" #table selectableRow mat-table [dataSource]="dataSource" 
+          recycleRows
+          matSort
+          matSortActive="date"
+          matSortDirection="desc"
+          class="table">
+    <!-- Date Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.date | date:DataConvention.PipeDateFormat}} </td>
+    </ng-container>
+
+    <!-- First Currency Column -->
+    <ng-container matColumnDef="firstCurrency">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> First Currency </th>
+      <td mat-cell *matCellDef="let element"> {{element.firstCurrency.name}} </td>
+    </ng-container>
+
+    <!-- Second Currency Column -->
+    <ng-container matColumnDef="secondCurrency">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Second Currency </th>
+      <td mat-cell *matCellDef="let element"> {{element.secondCurrency.name}} </td>
+    </ng-container>
+
+    <!-- Rate Column -->
+    <ng-container matColumnDef="rate">
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header> Rate </th>
+      <td mat-cell *matCellDef="let element"> {{element.rate | number: "1.4-4"}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-header" (contextmenu)="onRightClick($event, undefined, menuActions)"></tr>
+    <tr [id]="row.id" mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row" (contextmenu)="onRightClick($event, row, menuActions)"></tr>
+    <tr [id]="undefined"
+        class="empty"
+        (contextmenu)="onRightClick($event, undefined, menuActions)"
+        *matNoDataRow>
+      <td style="text-align: center;"
+          [attr.colspan]="displayedColumns.length">
+        <img class="icon"
+            src="assets/icons/empty-icon.png" />
+      </td>
+    </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[50, 100, 200]" showFirstLastButtons></mat-paginator>
+  </div>
+
+</div>
+
+<app-loader *ngIf="dataSource.loading$ | async" position="static"></app-loader>
+
+<div style="visibility: hidden; position: fixed;"
+  [style.left]="menuTopLeftPosition.x"
+  [style.top]="menuTopLeftPosition.y"
+  [matMenuTriggerFor]="contextMenu"></div>
+
+<mat-menu #contextMenu="matMenu">
+  <ng-template matMenuContent let-item="item">
+    <button *ngFor="let action of item.actions" mat-menu-item (click)="action.action(item.data)">
+      <mat-icon>{{action.icon}}</mat-icon>
+      <span>{{action.caption}}</span>
+    </button>
+  </ng-template>
+</mat-menu>

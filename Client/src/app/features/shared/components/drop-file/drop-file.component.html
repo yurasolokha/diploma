@@ -1,0 +1,9 @@
+<div #container class="drop-area" appDropFile
+  [allowedTypes]="allowedTypes"
+  (click)="openChoosingFileDialog()" 
+  (onFileDropped)="onFileDropped.emit($event)"
+  (onError)="handleError($event)">
+
+  <ng-content></ng-content>
+  <input #fileInput [accept]="allowedTypes.join(',')" style="display: none" type="file" (change)="selectFile($event)">
+</div>

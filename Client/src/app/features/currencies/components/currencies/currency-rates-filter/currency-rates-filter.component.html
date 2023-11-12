@@ -1,0 +1,72 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-icon>filter_list</mat-icon>
+      <span style="margin-left: 10px;">Filter</span>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <form [formGroup]="form" class="form">
+    <mat-slide-toggle formControlName="smoothFilter" style="margin-left: 50px;">Smooth filter</mat-slide-toggle>
+
+    <div class="form-row">
+      <button mat-icon-button color="primary" (click)="changeMonthPeriod(0)">
+        <mat-icon style="font-size: 20px;">remove</mat-icon>
+      </button>
+
+      <div class="date-picker" [ngClass]="{'input-error': form.controls['from'].dirty && form.controls['from'].invalid}">
+        <input matInput [matDatepicker]="picker1" formControlName="from" (wheel)="changeDateDay($event, 'from')">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </div>
+
+      <div class="date-picker" [ngClass]="{'input-error': form.controls['to'].dirty && form.controls['to'].invalid}">
+        <input matInput [matDatepicker]="picker2" formControlName="to" (wheel)="changeDateDay($event, 'to')">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </div>
+
+      <button mat-icon-button color="primary" (click)="changeMonthPeriod(1)">
+        <mat-icon style="font-size: 20px;">add</mat-icon>
+      </button>
+    </div>
+
+    <div class="form-row" style="margin: 0 50px;">
+      <div class="field-wrapper" [ngClass]="{'input-error': form.controls['firstCurrency'].dirty && form.controls['firstCurrency'].invalid}">
+        <mat-select class="select" formControlName="firstCurrency">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let currency of currencies$ | async" [value]="currency.id"> {{currency.name}} </mat-option>
+        </mat-select>
+      </div>
+
+      <button mat-icon-button color="primary" (click)="swapCurrencies()"><mat-icon>swap_horiz</mat-icon></button>
+
+      <div class="field-wrapper" [ngClass]="{'input-error': form.controls['secondCurrency'].dirty && form.controls['secondCurrency'].invalid}">
+        <mat-select class="select" formControlName="secondCurrency">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let currency of currencies$ | async" [value]="currency.id"> {{currency.name}} </mat-option>
+        </mat-select>
+      </div>
+    </div>
+  </form>
+
+  <div class="footer" style="margin: 0 50px;">
+    <button class="reset-button" (click)="resetFilter()">Clear filter</button>
+    <button class="apply-button" (click)="applyFilter()">Apply filter</button>
+  </div>
+  <div class="input-data-error" *ngIf="form.controls['from'].dirty && form.controls['from'].invalid || form.controls['to'].dirty && form.controls['to'].invalid">
+    <span>Invalid date format</span>
+  </div>
+</mat-expansion-panel>
+
+<mat-chip-list class="chip-list">
+  <mat-chip *ngFor="let appliedFilter of appliedFilters"
+  class="chip"
+  color="primary"
+  selected
+  [removable]="true"
+  (removed)="removeFilter(appliedFilter.id)">
+    {{appliedFilter.description}}
+    <mat-icon matChipRemove>cancel</mat-icon>
+  </mat-chip>
+</mat-chip-list>

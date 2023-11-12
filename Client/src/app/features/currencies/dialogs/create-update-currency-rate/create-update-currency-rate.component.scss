@@ -1,0 +1,29 @@
+@import 'forms';
+
+.layout{
+  display: block;
+  padding: 0 20px;
+
+  .form{
+    @extend %primary-form;
+    
+    gap: 20px;
+
+    .input-data-error {
+      color: $error-color;
+      margin: 0;
+    }
+
+    .currencies-rates-error {
+      display: flex;
+    }
+
+    .first {
+      flex: 1;
+    }
+    
+    .second {
+      margin-left: auto;
+    }
+  }
+}

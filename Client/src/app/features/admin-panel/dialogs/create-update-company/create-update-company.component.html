@@ -1,0 +1,9 @@
+<app-dialog-layout class="layout" [model]="model" (save)="save()" (close)="close()">
+  <form class="form" [formGroup]="form">
+    <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('name')}">
+      <label class="caption">Company Name</label>
+      <input class="field" formControlName="name" type="text" matInput />
+      <p class="input-data-error" *ngIf="InputValidation('name')">Please enter valid company name</p>
+    </div>
+  </form>
+</app-dialog-layout>

@@ -1,0 +1,33 @@
+
+::ng-deep {
+  .custom-select-panel {
+    height: 400px !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    overflow: overlay;
+    
+    footer {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      
+      .dropdown-wrapper {
+        box-shadow: inset 0 0 5px #bec8ff;
+        z-index: 100;
+        position: absolute;
+        background-color: white;
+        transition: ease-in-out 150ms;
+        width: 100%;
+        height: 100%;
+      
+        .node {
+          min-height: 25px;
+          height: 25px;
+          width: max-content;
+        }
+      }
+    }
+  }
+}

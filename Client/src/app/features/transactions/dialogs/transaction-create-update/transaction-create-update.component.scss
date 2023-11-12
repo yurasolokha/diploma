@@ -1,0 +1,29 @@
+@import 'forms';
+
+.layout{
+  display: block;
+  padding: 0 20px;
+
+  .form{
+    @extend %primary-form;
+    
+    gap: 20px;
+
+    .input-data-error {
+      color: $error-color;
+      margin: 0;
+    }
+
+    .accounts-error {
+      display: flex;
+    }
+
+    .account {
+      flex: 1;
+    }
+    
+    .destination-account{
+      margin-left: auto;
+    }
+  }
+}

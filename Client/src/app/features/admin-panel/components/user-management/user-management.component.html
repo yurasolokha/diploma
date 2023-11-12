@@ -1,0 +1,110 @@
+<div class="content">
+  <div class="breadcrumbs" (click)="goTo('admin-panel')">
+    <mat-icon style="transform: rotate(180deg);">arrow_right_alt</mat-icon> Admin Panel
+  </div>
+
+  <div class="header">
+    <h1 class="caption"><mat-icon class="icon">supervisor_account</mat-icon>User Management</h1>
+    <p class="description">Using this component, you can update information about users, their rights and roles in the system</p>
+  </div>
+
+  <div class="body">
+    <div class="user-section">
+      <table mat-table [dataSource]="usersData" class="table" matSort="usersSort">
+        <ng-container matColumnDef="image">
+          <th mat-header-cell *matHeaderCellDef style="width: 100px;"> </th>
+          <td mat-cell *matCellDef="let user">
+            <div class="image-wrapper">
+              <img *ngIf="user.image" class="image" [src]="user.image"/>
+              <span *ngIf="!user.image" class="initials">{{user | userInitials}}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fullName">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 25%;"> NAME </th>
+          <td mat-cell *matCellDef="let user"> {{user | userFullName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="userName" style="width: 20%;">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> LOGIN </th>
+          <td mat-cell *matCellDef="let user"> {{user.userName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 25%;"> EMAIL </th>
+          <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: auto;"> ROLE </th>
+          <td mat-cell *matCellDef="let user"> {{user.roles[0]?.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="company">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: auto;"> COMPANY </th>
+          <td mat-cell *matCellDef="let user"> {{user.company?.name}} </td>
+        </ng-container>
+
+        <tr class="header-row" mat-header-row *matHeaderRowDef="userTableColumns"></tr>
+        <tr (contextmenu)="onRightClick($event, row, userMenuActions)" class="row" mat-row *matRowDef="let row; columns: userTableColumns;"></tr>
+      </table>
+      <div *ngIf="!usersData?.data?.length" (contextmenu)="onRightClick($event, undefined, userMenuActions)" 
+        style="width: 100%; display: flex; align-content: center; align-items: center; justify-content: center; height: calc(100% - 56px);">
+        <mat-icon style="width: 35px; height: 35px; font-size: 35px;">list</mat-icon>
+      </div>
+    </div>
+
+    <div class="wrapper">
+      <div class="roles">
+        <table mat-table [dataSource]="roles" class="table">
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef style="width: 75%;"> ROLE </th>
+            <td mat-cell *matCellDef="let role"> {{role.name}} </td>
+          </ng-container>
+
+          <tr class="header-row" mat-header-row *matHeaderRowDef="rolesTableColumns"></tr>
+          <!-- <tr (contextmenu)="onRightClick($event, row, rolesMenuActions)" class="row" mat-row *matRowDef="let row; columns: rolesTableColumns;"></tr> -->
+          <tr class="row" mat-row *matRowDef="let row; columns: rolesTableColumns;"></tr>
+        </table>
+        <!-- <div *ngIf="!roles?.length" (contextmenu)="onRightClick($event, undefined, rolesMenuActions)"  -->
+        <div *ngIf="!roles?.length"
+          style="width: 100%; display: flex; align-content: center; align-items: center; justify-content: center; height: calc(100% - 56px);">
+          <mat-icon style="width: 35px; height: 35px; font-size: 35px;">list</mat-icon>
+        </div>
+      </div>
+
+      <div class="companies">
+        <table mat-table [dataSource]="companies" class="table">
+          <ng-container matColumnDef="company">
+            <th mat-header-cell *matHeaderCellDef style="width: 75%;"> COMPANY </th>
+            <td mat-cell *matCellDef="let company"> {{company.name}} </td>
+          </ng-container>
+
+          <tr class="header-row" mat-header-row *matHeaderRowDef="companiesTableColumns"></tr>
+          <tr (contextmenu)="onRightClick($event, row, companiesMenuActions)" class="row" mat-row *matRowDef="let row; columns: companiesTableColumns;"></tr>
+        </table>
+        <div *ngIf="!companies?.length" (contextmenu)="onRightClick($event, undefined, companiesMenuActions)" 
+          style="width: 100%; display: flex; align-content: center; align-items: center; justify-content: center; height: calc(100% - 56px);">
+          <mat-icon style="width: 35px; height: 35px; font-size: 35px;">list</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-loader *ngIf="isLoading"></app-loader>
+
+<div style="visibility: hidden; position: fixed;"
+  [style.left]="menuTopLeftPosition.x"
+  [style.top]="menuTopLeftPosition.y"
+  [matMenuTriggerFor]="contextMenu"></div>
+
+<mat-menu #contextMenu="matMenu">
+  <ng-template matMenuContent let-item="item">
+    <button *ngFor="let action of item.actions" mat-menu-item (click)="action.action(item.data)">
+      <mat-icon>{{action.icon}}</mat-icon>
+      <span>{{action.caption}}</span>
+    </button>
+  </ng-template>
+</mat-menu>

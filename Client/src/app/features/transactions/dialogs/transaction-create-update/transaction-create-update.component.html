@@ -1,0 +1,272 @@
+<app-dialog-layout
+  class="layout"
+  [model]="model"
+  (save)="save()"
+  (close)="close()"
+>
+  <form class="form" [formGroup]="form">
+    <div class="form-row">
+      <mat-checkbox formControlName="isExecuted">Is Executed</mat-checkbox>
+    </div>
+
+    <div class="form-row">
+      <div
+        class="field-wrapper"
+        [ngClass]="{ 'input-error': InputValidation('type') }"
+      >
+        <mat-select class="select" formControlName="type">
+          <mat-option *ngFor="let type of transactionTypes" [value]="type">{{
+            type
+          }}</mat-option>
+        </mat-select>
+      </div>
+      <div>
+            <div
+              class="date-picker"
+              [ngClass]="{
+                'input-error':
+                  form.controls['date'].dirty && form.controls['date'].invalid,
+                'input-warning': dateOutOfRange()
+              }"
+            >
+              <input
+                matInput
+                [ngxMatDatetimePickerFilter]="dateFilter"
+                [ngxMatDatetimePicker]="picker1"
+                placeholder="Date"
+                formControlName="date"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="getPicker(picker1)"
+              ></mat-datepicker-toggle>
+              <ngx-mat-datetime-picker
+                #picker1
+                [stepHour]="1"
+                [stepMinute]="1"
+                [stepSecond]="1"
+              ></ngx-mat-datetime-picker>
+            </div>
+            <p class="input-data-error" *ngIf="InputValidation('date') && !DateLockValidation('date')">Please enter valid date</p>
+            <p class="input-data-error" *ngIf="InputValidation('date') && DateLockValidation('date')">The period is blocked, you can't create the transaction.</p>
+      </div>
+        
+    </div>
+
+    <p class="input-data-error" *ngIf="InputValidation('type')">
+      Please select transaction type
+    </p>
+
+    <div class="form-row">
+      <div
+        class="field-wrapper"
+        [ngClass]="{
+          'input-error': InputValidation('account'),
+          'input-warning': equalsAccounts
+        }"
+      >
+        <label class="caption">
+          Account
+        </label>
+        <app-custom-tree-select
+          *ngIf="accounts"
+          class="select account-select"
+          [multiple]="false"
+          [allowItemAsFolder]="false"
+          [data]="accounts"
+          [selected]="form.controls['account'].value"
+          (selectedChange)="formValueChange('account', $event)"
+        >
+          <ng-template appTemplateName="item" let-item
+            ><span class="name"
+              >{{ item.name }} - {{ item.currency.code }}</span
+            ></ng-template
+          >
+          <ng-template appTemplateName="folder" let-item
+            ><span class="name">{{ item.name }}</span></ng-template
+          >
+        </app-custom-tree-select>
+      </div>
+      <div
+        class="field-wrapper"
+        *ngIf="form.controls['type'].value === 'Transfer'"
+        [ngClass]="{
+          'input-error': InputValidation('destinationAccount'),
+          'input-warning': equalsAccounts
+        }"
+      >
+        <label class="caption">
+          Destination Account
+        </label>
+        <app-custom-tree-select
+          *ngIf="accounts"
+          class="select account-select"
+          [multiple]="false"
+          [allowItemAsFolder]="false"
+          [data]="accounts"
+          [selected]="form.controls['destinationAccount'].value"
+          (selectedChange)="formValueChange('destinationAccount', $event)"
+        >
+          <ng-template appTemplateName="item" let-item
+            ><span class="name"
+              >{{ item.name }} - {{ item.currency.code }}</span
+            ></ng-template
+          >
+          <ng-template appTemplateName="folder" let-item
+            ><span class="name">{{ item.name }}</span></ng-template
+          >
+        </app-custom-tree-select>
+      </div>
+    </div>
+
+    <div
+      class="accounts-error"
+      *ngIf="
+        InputValidation('account') ||
+        (form.controls['type'].value === 'Transfer' &&
+          InputValidation('destinationAccount'))
+      "
+    >
+      <p class="input-data-error account" *ngIf="InputValidation('account')">
+        Please select account
+      </p>
+      <p
+        class="input-data-error destination-account"
+        *ngIf="
+          form.controls['type'].value === 'Transfer' &&
+          InputValidation('destinationAccount')
+        "
+      >
+        Please select destination account
+      </p>
+    </div>
+
+    <div *ngIf="transferDifferentValues()">
+      <mat-checkbox
+        formControlName="recalculate"
+        style="margin-bottom: 10px"
+        (change)="onRecalculateChange($event)"
+      >
+        Recalculate by the last rate</mat-checkbox
+      >
+
+      <div
+        class="field-wrapper"
+        [ngClass]="{ 'input-error': InputValidation('currentRate') }"
+      >
+        <label class="caption">Rate</label>
+        <input
+          (keyup)="onAmountChange($event, 'destinationAmount')"
+          formControlName="currentRate"
+          matInput
+          placeholder="Current rate"
+          [readonly]="form.controls['recalculate'].value"
+        />
+        <p class="input-data-error" *ngIf="InputValidation('currentRate')">
+          Please enter valid rate
+        </p>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div
+        class="field-wrapper"
+        [ngClass]="{ 'input-error': InputNumberValidation('amount') }"
+      >
+        <label class="caption">
+          Amount
+          <ng-container *ngIf="form.value.account as account">
+            ({{ account?.currency?.code }})
+          </ng-container>
+        </label>
+        <input
+          matInput
+          placeholder="0.0"
+          formControlName="amount"
+          (keyup)="onAmountChange($event, 'destinationAmount')"
+        />
+      </div>
+
+      <div
+        class="field-wrapper"
+        *ngIf="transferDifferentValues()"
+        [ngClass]="{
+          'input-error': InputNumberValidation('destinationAmount')
+        }"
+      >
+        <label class="caption">
+          Destination amount
+          <ng-container *ngIf="form.value.destinationAccount as destAccount">
+            ({{ destAccount?.currency?.code }})
+          </ng-container>
+        </label>
+        <input
+          matInput
+          placeholder="0.0"
+          formControlName="destinationAmount"
+          (keyup)="onAmountChange($event, 'amount')"
+        />
+      </div>
+    </div>
+
+    <p class="input-data-error" *ngIf="InputNumberValidation('amount')">
+      Please enter valid amount number
+    </p>
+
+    <div
+      class="field-wrapper"
+      *ngFor="
+        let control of filterDisabledClassifierControls(classifierControls)
+      "
+      [ngClass]="{
+        'input-error': InputValidation(control.name)
+      }"
+    >
+      <label class="caption">{{ control.key.pluralName }}</label>
+      <app-custom-tree-select
+        *ngIf="categories(control) as categories"
+        class="select categories-select"
+        [multiple]="false"
+        [allowItemAsFolder]="true"
+        [data]="categories"
+        [selected]="control.control.value"
+        (selectedChange)="formValueChange(control.name, $event)"
+      >
+        <ng-template appTemplateName="item" let-item
+          ><span class="name">{{ item.name }}</span></ng-template
+        >
+        <ng-template appTemplateName="folder" let-item
+          ><span class="name">{{ item.name }}</span></ng-template
+        >
+      </app-custom-tree-select>
+      
+      <p class="input-data-error" *ngIf="InputValidation(control.name)">
+        Plese select {{control.key.pluralName}}
+      </p>
+    </div>
+
+    <div class="form-row">
+      <div
+        class="field-wrapper"
+        [ngClass]="{ 'input-error': InputValidation('comment0') }"
+      >
+        <label class="caption">Comment</label>
+        <textarea
+          matInput
+          placeholder="Comment"
+          formControlName="comment0"
+        ></textarea>
+        <p class="input-data-error" *ngIf="InputValidation('comment0')">
+          Maximum number of characters exceeded(256)
+        </p>
+      </div>
+    </div>
+
+    <!-- <div class="form-row">
+      <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('comment1')}">
+        <label class="caption">Second Comment</label>
+        <textarea matInput placeholder="Comment" formControlName="comment1"></textarea>
+      </div>
+    </div> -->
+  </form>
+</app-dialog-layout>

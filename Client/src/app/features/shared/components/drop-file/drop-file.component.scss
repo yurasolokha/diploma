@@ -1,0 +1,21 @@
+.drop-area{
+  height: 100%;
+  width: 100%;
+  border-radius: 4px;
+  background-color: #fff;
+  border: dashed 2px #9da2ad;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-over{
+  border: dashed 3px #acb1bc;
+  background-color: #acb1bc10;
+  transition: 200ms;
+}
+
+.file-error{
+  border: dashed 2px #eb9e8d;
+}

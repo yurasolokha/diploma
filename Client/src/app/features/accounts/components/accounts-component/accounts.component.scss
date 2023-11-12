@@ -1,0 +1,11 @@
+@import 'variables';
+
+.content-wrapper{
+  display: flex;
+  flex-flow: column;
+  height: stretch;
+  padding: 20px 15px;
+  background-color: $secondary-background;
+  overflow-y: scroll;
+  gap: 10px;
+}

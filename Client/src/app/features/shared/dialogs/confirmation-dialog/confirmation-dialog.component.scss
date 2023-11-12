@@ -1,0 +1,84 @@
+@import "variables";
+@import "text";
+@import "buttons";
+
+.content{
+  min-width: 350px;
+  max-height: 80vh;
+  display: flex;
+  flex-flow: column;
+
+  .header-container{
+    display: flex;
+    flex-direction: row;
+    .close{
+      width: 30px;
+      height: 30px;
+      font-size: 30px;
+      float: right;
+      margin-bottom: 10px;
+      margin-left: auto;
+      cursor: pointer;
+    }
+  
+    .header{
+      @extend %primary-font;
+  
+      color: $primary-color;
+      font-size: $font-size-extra;
+      font-weight: 500;
+      letter-spacing: 0.75px;
+      margin: 0;
+      margin-bottom: 10px;
+      margin-top: 5px
+    }
+  }
+
+  .icon-wrapper {
+    margin-top: 5px;
+    display: block;
+    justify-self: center;
+    align-self: center;
+    .icon {
+      text-align: center;
+      font-size: 7.5em;
+      width: auto;
+      height: auto;
+    }
+  }
+  overflow-x: hidden;
+
+  .description{
+    &.center {
+      text-align: center;
+      font-size: 20px;
+    }
+
+    @extend %primary-font;
+
+    color: change-color($color: $primary-color, $alpha: 0.675);
+    font-size: $font-size-normal;
+    font-weight: 500;
+    letter-spacing: 0.75px;
+    margin: 0;
+    margin-bottom: 40px;
+  }
+
+  .buttons-wrapper{
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 10px;
+
+    .confirm-button{
+      @extend %primary-button-filled;
+      width: 75px;
+      height: 35px;
+    }
+
+    .cancel-button{
+      @extend %primary-button;
+      width: 75px;
+      height: 35px;
+    }
+  }
+}

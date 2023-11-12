@@ -1,0 +1,7 @@
+<div class="content">
+  <div class="grid">
+    <app-card *ngFor="let card of cards" [componentModel]="card" (click)="goTo(card.link)"></app-card>
+  </div>
+
+  <app-loader *ngIf="loading" class="loader"></app-loader>
+</div>

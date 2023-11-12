@@ -1,0 +1,27 @@
+<div class="content-wrapper">
+  <div class="body-wrapper">
+    <div *ngFor="let currencyRate of currencyRates" class="rate-wrapper">
+      <mat-checkbox [(ngModel)]="currencyRate.isChecked" class="chk-box"></mat-checkbox>
+
+      <div class="date-picker">
+        <input matInput [matDatepicker]="picker" [(ngModel)]="currencyRate.date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </div>
+
+      <span>{{currencyRate.firstCurrency.code}}</span>
+
+      <button mat-icon-button (click)="swap(currencyRate)"><mat-icon>swap_horiz</mat-icon></button>
+
+      <span>{{currencyRate.secondCurrency.code}}</span>
+
+      <span class="equal-sign"> = </span>
+
+      <input class="input-field" sb-precision="2" matInput placeholder="Rate" [(ngModel)]="currencyRate.rate">
+    </div>
+  </div>
+  <div class="footer-wrapper">
+    <button class="button" mat-raised-button color="primary" (click)="save()">Save</button>
+    <button class="button" mat-raised-button color="primary" (click)="close(undefined)">Close</button>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="card" (contextmenu)="contextMenu.emit($event)">
+  <div class="header">
+    <h1 class="caption">{{componentModel.headerCaption}}</h1>
+    <mat-icon class="icon">{{componentModel.headerIcon}}</mat-icon>
+  </div>
+
+  <div class="body">
+    <p class="description">{{componentModel.description}}</p>
+  </div>
+
+  <div class="footer">
+    <h1 class="caption">{{componentModel.footerCaption}}</h1>
+    <mat-icon class="icon">arrow_right_alt</mat-icon>
+  </div>
+</div>

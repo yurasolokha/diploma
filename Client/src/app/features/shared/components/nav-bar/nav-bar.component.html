@@ -1,0 +1,37 @@
+<div (appClickOutside)="isActive = false"
+     class="content" 
+     [ngClass]="{'content-active': isActive}">
+  <div class="logo">
+    <img (click)="isActive = !isActive" class="icon" src="assets/logo/AbtoCash_Logo.svg"/>
+    <h1 class="header">Abto Cash</h1>
+  </div>
+
+  <div class="actions">
+    <div *ngFor="let item of menuItems" class="action-wrapper">
+      <div class="action">
+        <div class="wrapper" (click)="goto(item)">
+          <mat-icon class="icon">{{item.icon}}</mat-icon>
+          <span class="caption">{{item.caption}}</span>
+        </div>
+        <mat-icon *ngIf="item.children" (click)="item.isExpanded = !item.isExpanded" class="expand-icon">{{item.isExpanded ? 'expand_more' : 'chevron_right'}}</mat-icon>
+      </div>
+
+      <div class="sub-actions" *ngIf="item.children" [ngClass]="{'sub-actions-expanded' : item.isExpanded}">
+        <span *ngFor="let child of item.children" class="sub-action" (click)="goto(child)">{{child.caption}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile" (click)="isActive = !isActive">
+    <div class="image-wrapper">
+      <span class="initials">{{user$ | async | userInitials}}</span>
+    </div>
+
+    <div class="name-wrapper">
+      <span class="name">{{(user$ | async)!.firstName}} {{(user$ | async)!.lastName}}</span>
+      <span class="role">{{(user$ | async)!.roles[0].name}}</span>
+    </div>
+
+    <mat-icon class="logout" (click)="logout()">exit_to_app</mat-icon>
+  </div>
+</div>

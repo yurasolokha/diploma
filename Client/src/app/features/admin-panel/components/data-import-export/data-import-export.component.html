@@ -1,0 +1,38 @@
+<div class="content">
+  <div class="breadcrumbs" (click)="goTo('admin-panel')">
+    <mat-icon style="transform: rotate(180deg);">arrow_right_alt</mat-icon> Admin Panel
+  </div>
+
+  <div class="header">
+    <h1 class="caption"><mat-icon class="icon">import_export</mat-icon>Data Import/Export</h1>
+    <p class="description">You can easily import external data into AbtoCash from old (AbyCash) database.</p>
+  </div>
+
+  <div class="body">
+    <div class="section aby-cash-import">
+      <div class="header">
+        <h3 class="caption"><mat-icon class="icon">cloud_download</mat-icon>Import From "Ability cash"</h3>
+        <p class="description">Import from the old database of all transactions, currency accounts, etc.</p>
+      </div>
+
+      <div class="body">
+        <app-drop-file *ngIf="!mode" class="drop-area" [allowedTypes]="abyCashDbExtensions" (onFileDropped)="importAbyCash($event)">
+          <div class="content">
+            <mat-icon class="icon">cloud_upload</mat-icon>
+            <span class="caption">Click or drop old database file here</span>
+          </div>
+        </app-drop-file>
+
+        <div class="import-container" *ngIf="mode">
+          <span class="progress-caption">
+            <span>{{statusText}}</span>
+            {{progress | percent}}
+          </span>
+          <mat-progress-bar class="progress-bar" [mode]="mode" (value)="progress"></mat-progress-bar>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-loader *ngIf="isLoading"></app-loader>

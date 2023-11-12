@@ -1,0 +1,19 @@
+<app-dialog-layout class="import-dialog-container" [model]="model" (save)="confirm()" (close)="cancel()">
+    <div class="body">
+        <app-drop-file *ngIf="!mode" class="drop-area" [allowedTypes]="model.fileExtensions" (onFileDropped)="fileChange($event)">
+            <div class="content">
+                <mat-icon class="icon">cloud_upload</mat-icon>
+                <span class="caption">{{!selectedFile ? "Click or drop file here" : "Selected \"" + selectedFile.name + "\" file"}}</span>
+            </div>
+        </app-drop-file>
+        <div class="import-container" *ngIf="mode">
+            <span class="progress-caption">
+                <span>{{statusText}}</span>
+                <ng-container *ngIf="mode=='determinate'">
+                    {{progress | percent}}
+                </ng-container>
+            </span>
+            <mat-progress-bar class="progress-bar" [mode]="mode" (value)="progress"></mat-progress-bar>
+        </div>    
+    </div>
+</app-dialog-layout>

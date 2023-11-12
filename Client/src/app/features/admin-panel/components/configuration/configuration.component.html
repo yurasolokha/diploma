@@ -1,0 +1,65 @@
+<div class="content">
+  <div class="breadcrumbs" (click)="goTo('admin-panel')">
+    <mat-icon style="transform: rotate(180deg);">arrow_right_alt</mat-icon> Admin Panel
+  </div>
+
+  <div class="header">
+    <h1 class="caption"><mat-icon class="icon">settings</mat-icon>System Configuration</h1>
+    <p class="description">Set system settings, such as date lock, classifier order, and more.</p>
+  </div>
+
+  <div class="body">
+    <app-content-widget [widgetModel]="widgets.dateBlocking" class="date-blocking">
+      <table mat-table [dataSource]="blockedDates" class="table" matSort="blockedDatesSort">
+        <ng-container matColumnDef="period">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 66%;"> PERIOD </th>
+          <td mat-cell *matCellDef="let blockedDate"> {{blockedDate | dateRange}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="blockedBy" style="width: 33%;">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> BLOCKED BY </th>
+          <td mat-cell *matCellDef="let blockedDate"> {{blockedDate.user.userName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let element" class="actions"> 
+            <button mat-icon-button (click)="unlockDate(element)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr class="header-row" mat-header-row *matHeaderRowDef="blockedDatesColumns"></tr>
+        <tr class="row" mat-row *matRowDef="let row; columns: blockedDatesColumns;"></tr>
+      </table>
+
+      <div class="footer">
+        <form class="date-picker" [formGroup]="blockedDatesForm">
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate placeholder="Start date" formControlName="from" readonly>
+            <input matEndDate placeholder="End date" formControlName="to" readonly>
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </form>
+
+        <button class="button" (click)="blockDate()">Block</button>
+      </div>
+    </app-content-widget>
+
+    <app-content-widget [widgetModel]="widgets.classifierOrdering" class="classifiers-ordering">
+      <div class="classifiers-grid" cdkDropList (cdkDropListDropped)="drop($event)">
+        <div class="data-row" *ngFor="let classifier of classifiers" cdkDrag>
+          <span class="data-caption"> {{ classifier.singularName }} </span>
+
+          <mat-select class="select" [value]="classifier.requiredTransactionTypes" multiple (selectionChange)="onChange($event, classifier)">
+            <mat-option *ngFor="let type of transactionTypes" [value]="type">{{type}}</mat-option>
+          </mat-select>
+        </div>
+      </div>
+    </app-content-widget>
+  </div>
+</div>
+
+<app-loader *ngIf="isLoading"></app-loader>

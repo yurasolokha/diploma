@@ -1,0 +1,46 @@
+@import 'text';
+@import 'variables';
+
+.widget {
+  display: flex;
+  flex-flow: column;
+  box-shadow: 0 0 7px rgba(0,0,0,0.25);
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: $primary-background;
+
+  .header{
+    background-color: $secondary-background-reverse;
+    padding: 10px 0 15px;
+
+    .caption{
+      @extend %primary-font;
+
+      color: $primary-color-reverse;
+      font-size: $font-size-extra;
+      font-weight: 500;
+      letter-spacing: 0.75px;
+      margin: 10px 0 10px 10px;
+      
+      .icon {
+        color: $primary-color-reverse;
+
+        font-size: 25px;
+        width: 25px;
+        height: 25px;
+        margin-bottom: 5px;
+        margin-right: 10px;
+        vertical-align: middle;
+      }
+    }
+    .description{
+      @extend %primary-font;
+
+      color: $primary-color-reverse;
+      font-size: $font-size-normal;
+      font-weight: 500;
+      letter-spacing: 0.75px;
+      padding-left: 12px;
+    }
+  }
+}

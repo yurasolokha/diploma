@@ -1,0 +1,255 @@
+@import "variables";
+@import "text";
+
+$full-width: 275px;
+
+.content{
+  width: 100%;
+  height: 100%;
+  padding: 10px 0;
+  display: flex;
+  flex-flow: column;
+  background-color: $primary-background-reverse;
+
+  transition-duration: 130ms;
+
+  .logo {
+    width: 100%;
+    padding-left: 15px;
+    margin-bottom: clamp(50px, 7vh, 80px);
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 24px;
+
+    .icon{
+      width: 50px;
+      height: 50px;
+    }
+
+    .header{
+      margin: 0;
+      text-align: center;
+      font-size: 22px;
+      display: none;
+      color: $primary-color-reverse;
+      white-space: nowrap;
+      transition-duration: 130ms;
+      font-weight: 500;
+    }
+  }
+
+  .actions{
+    display: flex;
+    flex-flow: column;
+    gap: clamp(10px, 1.6vh, 25px);
+
+    .action-wrapper{
+      transition-duration: 230ms;
+      border-radius: 10px;
+      padding: 15px 3px 15px 23px;
+      overflow: hidden;
+      
+      .action{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+
+        .wrapper{
+          display: flex;
+          gap: 20px;
+          flex-wrap: nowrap;
+          align-items: flex-end;
+
+          .icon{
+            width: 30px;
+            height: 30px;
+            font-size: 30px;
+            color: $primary-color-reverse;
+          }
+
+          .caption{
+            @extend %primary-font;
+
+            margin-bottom: 2px;
+            color: transparent;
+            transition-duration: 130ms;
+            font-size: $font-size-extra;
+            white-space: nowrap;
+          }
+        }
+
+        .expand-icon{
+          width: 30px;
+          height: 30px;
+          font-size: 30px;
+          margin-right: 10px;
+          color: $primary-color-reverse;
+
+          display: none;
+        }
+      }
+
+      .sub-actions{
+        display: flex;
+        flex-flow: column;
+        gap: 15px;
+        height: 0;
+        transition-duration: 300ms;
+        overflow: hidden;
+
+        .sub-action{
+          @extend %primary-font;
+
+          user-select: none;
+          margin-bottom: 2px;
+          margin-left: 50px;
+          color: change-color($color: $primary-color-reverse, $alpha: 0.8);
+          transition-duration: 70ms;
+          font-size: $font-size-large;
+          white-space: nowrap;
+          cursor: pointer;
+
+          &:hover{
+            color: $primary-color-reverse;
+          }
+        }
+      }
+
+      &:hover{
+        width: $full-width;
+        background-color: $secondary-background-reverse;
+
+        .action{
+          .wrapper{
+            .caption{
+              color: $primary-color-reverse;
+            }
+          }
+          
+          .expand-icon{
+            display: block;
+          }
+        }
+
+        .sub-actions-expanded{
+          height: auto;
+          padding-top: 20px;
+        }
+      }
+    }
+  }
+
+  .profile{
+    width: 100%;
+    padding-left: 15px;
+    margin-top: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 24px;
+    overflow: visible;
+
+    .image-wrapper{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: $primary-background;
+
+      .initials{
+        @extend %primary-font-bold;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        user-select: none;
+        color: $primary-color;
+        font-size: $font-size-extra;
+      }
+    }
+
+    .name-wrapper{
+      display: flex;
+      flex-flow: column;
+      visibility: hidden;
+      flex-wrap: nowrap;
+      max-width: 120px;
+      overflow: hidden;
+
+      .name{
+        @include generic-font(Roboto, $primary-color-reverse, $font-size-large);
+
+        white-space: nowrap;
+        letter-spacing: 1px;
+      }
+
+      .role{
+        @include generic-font(Roboto, change-color($primary-color-reverse, $alpha: 0.75), $font-size-small);
+
+        white-space: nowrap;
+        letter-spacing: 0.7px;
+      }
+    }
+
+    .logout{
+      visibility: hidden;
+      color: $primary-color-reverse;
+      cursor: pointer;
+      margin-left: auto;
+      margin-right: 20px;
+    }
+  }
+}
+
+.content-active {
+  width: $full-width;
+
+  .logo{
+    .header{
+      display: block;
+    }
+  }
+
+  .actions{
+    overflow-y: scroll;
+    
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+
+    .action-wrapper{
+      .action{
+        .wrapper{
+          .caption{
+            color: $primary-color-reverse;
+          }
+        }
+          
+        .expand-icon{
+          display: block;
+        }
+      }
+
+      .sub-actions-expanded{
+        height: auto;
+        padding-top: 20px;
+      }
+    }
+  }
+
+  .profile{
+    .name-wrapper{  
+      visibility: visible;
+    }
+
+    .logout{
+      visibility: visible;
+    }
+  }
+}

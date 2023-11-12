@@ -1,0 +1,15 @@
+<app-dialog-layout class="layout" [model]="model" (save)="save()" (close)="close()">
+  <form class="form" [formGroup]="form">
+    <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('name')}">
+      <label class="caption">Currency Name</label>
+      <input class="field" formControlName="name" type="text" matInput />
+      <p class="input-data-error" *ngIf="InputValidation('name')">Please enter valid currency name</p>
+    </div>
+
+    <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('code')}">
+      <label class="caption">Currency Code</label>
+      <input class="field" formControlName="code" type="text" matInput />
+      <p class="input-data-error" *ngIf="InputValidation('code')">Please enter valid currency code</p>
+    </div>
+  </form>
+</app-dialog-layout>

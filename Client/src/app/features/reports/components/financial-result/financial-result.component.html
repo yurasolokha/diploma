@@ -1,0 +1,357 @@
+<div class="content">
+  <div class="breadcrumbs" (click)="goTo('reports')">
+    <mat-icon style="transform: rotate(180deg)">arrow_right_alt</mat-icon>
+    Reports Dashboard
+  </div>
+
+  <div class="header">
+    <h1 class="caption">
+      <mat-icon class="icon">pie_chart</mat-icon>Financial results
+    </h1>
+    <p class="description">
+      Financial results are filtered and grouped according to a certain
+      criterion in a certain period of time
+    </p>
+  </div>
+
+  <div class="body">
+    <div>
+      <div class="filter-wrapper" style="float: left">
+        <form [formGroup]="form" class="form-wrapper">
+          <div class="form-row">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="changeMonthPeriod(0)"
+            >
+              <mat-icon style="font-size: 20px">remove</mat-icon>
+            </button>
+
+            <div
+              class="date-picker"
+              [ngClass]="{ 'input-error': InputValidation('from') }"
+            >
+              <input
+                matInput
+                [matDatepicker]="picker1"
+                formControlName="from"
+                (wheel)="changeDateDay($event, 'from')"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker1"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </div>
+
+            <div
+              class="date-picker"
+              [ngClass]="{ 'input-error': InputValidation('from') }"
+            >
+              <input
+                matInput
+                [matDatepicker]="picker2"
+                formControlName="to"
+                (wheel)="changeDateDay($event, 'to')"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker2"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </div>
+
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="changeMonthPeriod(1)"
+            >
+              <mat-icon style="font-size: 20px">add</mat-icon>
+            </button>
+          </div>
+
+          <div class="form-row">
+            <div
+              class="field-wrapper"
+              [ngClass]="{ 'input-error': InputValidation('classifier') }"
+            >
+              <mat-select class="select" formControlName="classifier">
+                <mat-option
+                  *ngFor="let classifier of classifiers"
+                  [value]="classifier"
+                >
+                  {{ classifier.singularName }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div
+              class="field-wrapper"
+              [ngClass]="{ 'input-error': InputValidation('currency') }"
+            >
+              <mat-select class="select" formControlName="currency">
+                <mat-option
+                  *ngFor="let currency of currencies$ | async"
+                  [value]="currency"
+                >
+                  {{ currency.name }}
+                </mat-option>
+              </mat-select>
+            </div>
+
+            <div
+              class="field-wrapper"
+              [ngClass]="{ 'input-error': InputValidation('types') }"
+            >
+              <mat-select class="select" formControlName="types" multiple>
+                <mat-option
+                  *ngFor="let type of transactionTypes"
+                  [value]="type"
+                >
+                  {{ type }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+
+          <div
+            class="field-wrapper"
+            [ngClass]="{ 'input-error': InputValidation('accounts') }"
+          >
+            <label class="caption">Accounts</label>
+            <app-custom-tree-select
+              *ngIf="accounts"
+              class="select account-select"
+              [multiple]="true"
+              [allowItemAsFolder]="false"
+              [data]="accounts"
+              [selected]="form.controls['accounts'].value"
+              (selectedChange)="formValueChange('accounts', $event)"
+            >
+              <ng-template appTemplateName="item" let-item
+                ><span class="name"
+                  >{{ item.name }} - {{ item.currency.code }}</span
+                ></ng-template
+              >
+              <ng-template appTemplateName="folder" let-item
+                ><span class="name">{{ item.name }}</span></ng-template
+              >
+            </app-custom-tree-select>
+          </div>
+        </form>
+
+        <button class="button" (click)="applyFilter()">Show</button>
+
+        <div
+          class="input-data-error"
+          *ngIf="InputValidation('from') || InputValidation('to')"
+        >
+          <span>Invalid date format</span>
+        </div>
+      </div>
+
+      <div class="rates-diffs-wrapper" *ngIf="maxDiff != null">
+        <form class="form-wrapper">
+          <div class="form-row" style="padding-bottom: 10px">
+            <div class="field-wrapper">
+              <label class="caption">Maximum rate difference</label>
+              <input
+                class="field"
+                [ngClass]="{
+                  'field-warning':
+                    maxDiff >
+                    BusinessLogicConfiguration.MaxRateDifferenceForWarning
+                }"
+                type="text"
+                value="{{ maxDiff }}"
+                matInput
+                readonly
+              />
+              <mat-icon
+                class="icon"
+                *ngIf="
+                  maxDiff >
+                  BusinessLogicConfiguration.MaxRateDifferenceForWarning
+                "
+              >
+                {{ "warning" }}
+              </mat-icon>
+            </div>
+          </div>
+          <div class="form-row" style="padding-bottom: 10px">
+            <div class="field-wrapper">
+              <label class="caption">Minimum rate difference</label>
+              <input
+                class="field"
+                [ngClass]="{
+                  'field-warning':
+                    minDiff >
+                    BusinessLogicConfiguration.MaxRateDifferenceForWarning
+                }"
+                type="text"
+                value="{{ minDiff }}"
+                matInput
+                readonly
+              />
+              <mat-icon
+                class="icon"
+                *ngIf="
+                  minDiff >
+                  BusinessLogicConfiguration.MaxRateDifferenceForWarning
+                "
+              >
+                {{ "warning" }}
+              </mat-icon>
+            </div>
+          </div>
+          <div class="form-row" style="padding-bottom: 10px">
+            <div class="field-wrapper">
+              <label class="caption">Average rate difference</label>
+              <input
+                class="field"
+                [ngClass]="{
+                  'field-warning':
+                    avgDiff >
+                    BusinessLogicConfiguration.MaxRateDifferenceForWarning
+                }"
+                type="text"
+                value="{{ avgDiff }}"
+                matInput
+                readonly
+              />
+              <mat-icon
+                class="icon"
+                *ngIf="
+                  avgDiff >
+                  BusinessLogicConfiguration.MaxRateDifferenceForWarning
+                "
+              >
+                {{ "warning" }}
+              </mat-icon>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <div class="table-header">
+        <div class="table-header-cell table-header-name-cell">
+          <span>Name</span>
+        </div>
+
+        <div class="table-header-cell">
+          <span>Amount</span>
+        </div>
+
+        <div class="table-header-cell">
+          <span>Parent turnover</span>
+        </div>
+
+        <div class="table-header-cell">
+          <span>General turnover</span>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <mat-tree
+        [dataSource]="dataSource"
+        [treeControl]="treeControl"
+        class="tree-table"
+      >
+        <mat-tree-node
+          *matTreeNodeDef="let node"
+          matTreeNodePadding
+          class="table-node-row"
+        >
+          <div class="table-node-cell name-cell">
+            <button mat-icon-button disabled></button>
+            <span matTreeNodePadding>{{ node.folderData }}</span>
+          </div>
+
+          <div class="table-node-cell">
+            <span>{{ node.item.amount | number : "2.2-2" }}</span>
+          </div>
+
+          <div class="table-node-cell">
+            <span class="data"
+              >{{ getParentTurnover(node) * 100 | number : "2.2-2" }}%</span
+            >
+            <div class="status-bar-container">
+              <div
+                class="status-bar"
+                [ngStyle]="{ width: getParentTurnover(node) * 100 + '%' }"
+              ></div>
+            </div>
+          </div>
+
+          <div class="table-node-cell">
+            <span class="data"
+              >{{ getGeneralTurnover(node) * 100 | number : "2.2-2" }}%</span
+            >
+            <div class="status-bar-container">
+              <div
+                class="status-bar"
+                [ngStyle]="{ width: getGeneralTurnover(node) * 100 + '%' }"
+              ></div>
+            </div>
+          </div>
+        </mat-tree-node>
+
+        <mat-tree-node
+          *matTreeNodeDef="let node; when: hasChild"
+          class="table-node-row"
+        >
+          <div class="table-node-cell name-cell" matTreeNodePadding>
+            <button
+              mat-icon-button
+              matTreeNodeToggle
+              [attr.aria-label]="'Toggle ' + node.folderData"
+            >
+              <mat-icon class="mat-icon-rtl-mirror">
+                {{
+                  treeControl.isExpanded(node) ? "expand_more" : "chevron_right"
+                }}
+              </mat-icon>
+            </button>
+            <span>{{ node.folderData }}</span>
+          </div>
+
+          <div class="table-node-cell">
+            <span>{{ node.item.amount | number : "2.2-2" }}</span>
+          </div>
+
+          <div class="table-node-cell">
+            <span class="data"
+              >{{ getParentTurnover(node) * 100 | number : "2.2-2" }}%</span
+            >
+            <div class="status-bar-container">
+              <div
+                class="status-bar"
+                [ngStyle]="{ width: getParentTurnover(node) * 100 + '%' }"
+              ></div>
+            </div>
+          </div>
+
+          <div class="table-node-cell">
+            <span class="data"
+              >{{ getGeneralTurnover(node) * 100 | number : "2.2-2" }}%</span
+            >
+            <div class="status-bar-container">
+              <div
+                class="status-bar"
+                [ngStyle]="{ width: getGeneralTurnover(node) * 100 + '%' }"
+              ></div>
+            </div>
+          </div>
+        </mat-tree-node>
+      </mat-tree>
+    </div>
+
+    <div [id]="chartId" class="chart"></div>
+  </div>
+</div>
+
+<app-loader *ngIf="isLoading"></app-loader>

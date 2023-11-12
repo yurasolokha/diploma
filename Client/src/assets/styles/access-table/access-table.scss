@@ -1,0 +1,32 @@
+.access-table-wrapper{
+    table {
+        tr {
+            td {
+                .mat-icon-button {
+                    width: 30px;
+                    height: 30px;
+                    line-height: 30px;
+    
+                }
+                
+                .mat-checkbox .mat-checkbox-ripple {
+                    position: absolute;
+                    left: calc(50% - 16px);
+                    top: calc(50% - 16px);
+                    height: 32px;
+                    width: 32px;
+                }
+            }
+        }
+    }
+}
+
+.content-wrapper{
+    height: 100% !important;
+    .mat-tab-group {
+        height: 100% !important;
+        .mat-tab-body-wrapper{
+            height: 100vh !important;
+        }
+    }
+}

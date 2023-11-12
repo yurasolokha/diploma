@@ -1,0 +1,155 @@
+@import 'text';
+@import 'variables';
+@import 'buttons';
+@import 'components';
+
+%primary-form {
+  display: flex;
+  flex-flow: column;
+  gap: 10px;
+  
+  .form-row{
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .field-wrapper {
+    display: flex;
+    flex-flow: column;
+    width: stretch;
+    
+    .icon{
+      position: relative;
+      margin-top: -26px;
+      margin-left: auto;
+      margin-right: 10px;
+    }
+
+    input {
+      height: 27px;
+      border: 1px solid;
+      border-radius: 3px;
+    }
+  }
+
+  .date-picker {
+    @extend %date-picker;
+
+    input{
+      border: none;
+      background-color: transparent;
+
+      &:focus{
+        outline: none;
+        border: none;
+      }
+    }
+  }
+
+  .form-button {
+    @extend %primary-button;
+  }
+
+  .caption{
+    @extend %primary-font;
+
+    font-weight: 500;
+    font-size: $font-size-normal;
+    margin-bottom: 3px;
+  }
+
+  input,
+  .field {
+    @extend %primary-font;
+
+    font-size: $font-size-normal;
+    padding: 4px 40px 4px 12px;
+    border-radius: 4px;
+    border: solid 1px $secondary-background-reverse;
+    transition-duration: 200ms;
+    width: stretch;
+
+    &:focus{
+      outline: none;
+      border: solid 1px change-color($secondary-background-reverse, $alpha: 0.6);
+    }
+
+    &:disabled, &:read-only {
+      color: rgba(0,0,0,.38);
+      background-color: inherit;
+      border: 1px solid rgb(17, 16, 29) !important;
+    }
+  }
+
+  .select{
+    @extend .field;
+
+    padding: 4px 12px 4px 12px;
+  }
+
+  .input-error {
+    .field{
+      border: solid 1px $error-color;
+    }
+    .select{
+      border: solid 1px $error-color;
+    }
+  }
+
+  .input-warning {
+    border: solid 1px $warning-color;
+    .field{
+      border: solid 1px $warning-color;
+    }
+    .select{
+      border: solid 1px $warning-color;
+    }
+  }
+
+  .input-error.date-picker {
+    border: solid 1px $error-color;
+  }
+
+  .fields-container {
+    display: flex;
+    justify-content: space-between;
+
+    .field-wrapper{
+      width: 47%;
+    }
+  }
+}
+
+::ng-deep {
+  .account-select-panel{
+    height: 400px !important;
+    max-height: 400px !important;
+
+    footer{
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+textarea {
+  @extend %primary-font;
+
+  font-size: $font-size-normal;
+  padding: 4px;
+  border-radius: 4px;
+  border: solid 1px $secondary-background-reverse;
+  transition-duration: 200ms;
+  resize: none;
+  height: 100px;
+
+  &:focus {
+    outline: none;
+    border: solid 1px change-color($secondary-background-reverse, $alpha: 0.6);
+  }
+}

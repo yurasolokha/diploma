@@ -1,0 +1,80 @@
+@import 'text';
+@import 'variables';
+
+.card{
+  width: clamp(200px, 17vw, 300px);
+  height: clamp(220px, 20vw, 320px);
+  display: flex;
+  flex-flow: column;
+  background: linear-gradient(180deg, $secondary-background-reverse 75%, #fff 25%);
+  border-radius: 14px;
+  padding: 15px 20px;
+  box-shadow: 0 0 7px rgba(0,0,0,0.25);
+  user-select: none;
+  cursor: pointer;
+
+  .header{
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-items: center;
+
+    .caption{
+      @extend %primary-font;
+
+      color: $primary-color-reverse;
+      font-size: $font-size-extra;
+      font-weight: 500;
+      letter-spacing: 0.75px;
+    }
+
+    .icon{
+      color: $primary-color-reverse;
+      font-size: 36px;
+      width: 36px;
+      height: 36px;
+      margin-bottom: 5px;
+    }
+  }
+
+  .body{
+    padding-top: 25px;
+
+    .description{
+      color: $primary-color-reverse;
+      font-size: $font-size-normal;
+      font-weight: 400;
+      letter-spacing: 0.75px;
+      text-align: justify;
+    }
+  }
+}
+
+.footer{
+  margin-top: auto;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  justify-content: space-between;
+
+  .caption{
+    @extend %primary-font;
+
+    color: $primary-color;
+    font-size: $font-size-extra;
+    font-weight: 500;
+    letter-spacing: 0.75px;
+    margin: 0;
+    max-width: 130px;
+  }
+
+  .icon{
+    color: $primary-color;
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+    margin-bottom: 5px;
+  }
+}

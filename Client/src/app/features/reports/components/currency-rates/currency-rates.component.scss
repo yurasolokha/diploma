@@ -1,0 +1,98 @@
+@import "text";
+@import "variables";
+@import "components";
+@import "buttons";
+@import "forms";
+
+.content {
+  display: flex;
+  flex-flow: column;
+  height: stretch;
+  padding: 30px 20px;
+  background-color: $secondary-background;
+  overflow-y: auto;
+
+  .breadcrumbs {
+    @extend %primary-font;
+    font-size: $font-size-large;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+
+    mat-icon {
+      width: 32px;
+      height: 32px;
+      font-size: 32px;
+    }
+  }
+
+  .header {
+    display: flex;
+    flex-flow: column;
+
+    .caption {
+      @extend %primary-font;
+
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 32px;
+      font-weight: 500;
+      vertical-align: center;
+      margin: 0;
+      padding: 10px 0;
+
+      .icon {
+        width: 45px;
+        height: 45px;
+        font-size: 45px;
+      }
+    }
+
+    .description {
+      @extend %primary-font;
+
+      font-size: $font-size-large;
+      margin: 0;
+      padding-left: 60px;
+    }
+  }
+
+  .body {
+    display: flex;
+    flex-flow: column;
+    padding-top: 40px;
+    gap: 40px;
+
+    .filter-wrapper {
+      max-width: 500px;
+
+      .form-wrapper {
+        @extend %primary-form;
+
+        gap: 20px;
+
+        margin-bottom: 20px;
+      }
+
+      .button {
+        @extend %primary-button;
+
+        padding: 5px 35px;
+      }
+
+      .input-data-error {
+        color: $error-color;
+        margin-top: 15px;
+      }
+    }
+
+    .chart-wrapper {
+      google-chart {
+        width: 100%;
+      }
+    }
+  }
+}

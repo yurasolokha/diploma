@@ -1,0 +1,83 @@
+@import 'text';
+@import 'variables';
+
+%date-picker {
+  display: flex;
+  border: 1px solid $primary-color;
+  border-radius: 4px;
+  height: 35px;
+  padding-left: 10px;
+
+  ::ng-deep{
+    .mat-datepicker-toggle {
+      margin-left: auto;
+      
+      .mat-icon-button{
+        height: 35px;
+        width: 35px;
+        font-size: 35px;
+        line-height: 15px;
+      }
+    }
+
+    .mat-date-range-input {
+      display: flex;
+
+      .mat-date-range-input-start-wrapper{
+        width: 80px;
+      }
+
+      .mat-date-range-input-end-wrapper{
+        width: 80px;
+      }
+    }
+  }
+}
+
+%breadcrumbs{
+  @extend %primary-font;
+  font-size: $font-size-large;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+
+  mat-icon{
+    width: 32px;
+    height: 32px;
+    font-size: 32px;
+  }
+}
+
+%header{
+  display: flex;
+  flex-flow: column;
+  
+  .caption{
+    @extend %primary-font;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 32px;
+    font-weight: 500;
+    vertical-align: center;
+    margin: 0;
+    padding: 10px 0;
+
+    .icon{
+      width: 45px;
+      height: 45px;
+      font-size: 45px;
+    }
+  }
+
+  .description{
+    @extend %primary-font;
+
+    font-size: $font-size-large;
+    margin: 0;
+    padding-left: 60px;
+  }
+}

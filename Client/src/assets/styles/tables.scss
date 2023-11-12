@@ -1,0 +1,28 @@
+@import 'text';
+@import 'variables';
+@import 'buttons';
+@import 'components';
+
+%table {
+  width: 100%;
+
+  .table-header{
+    background-color: #eeecec;
+    border-top: solid #b6b6b6 1px;
+    border-bottom: solid #b6b6b6 1px;
+    height: 35px;
+  }
+
+  .table-row{
+    padding: 0;
+    height: 30px;
+  }
+
+  .table-row:hover{
+    background-color: #f1efef;
+  }
+
+  .selected{
+    background-color: #e6e6e6;
+  }
+}

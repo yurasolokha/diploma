@@ -1,0 +1,27 @@
+@import "text";
+@import "buttons";
+
+$nav-bar-width: 80px;
+
+.content{
+  background-color: $secondary-background;
+
+  .nav-bar{
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: $nav-bar-width;
+    position: fixed;
+    z-index: 9999;
+
+    overflow: visible;
+  }
+
+  .body-wrapper{
+    margin-left: $nav-bar-width;
+    padding: 10px;
+    padding-right: 5px;
+    height: 100vh;
+    overflow: hidden;
+  }
+}

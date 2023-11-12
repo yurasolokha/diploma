@@ -1,0 +1,65 @@
+.content-wrapper {
+  width: 100%;
+
+  .tree-header {
+    width: 100%;
+    display: table;
+    empty-cells: show; 
+    background-color: #f1efef;
+    border-top: solid #b6b6b6 1px;
+    border-bottom: solid #b6b6b6 1px;
+
+    .tree-header-cell {
+      display: table-cell;
+      padding: 5px;
+      width: 15%;
+    }
+  }
+
+  .empty {
+    background-color: #fff;
+    .icon {
+      height: 15%;
+      padding-bottom: 25px;
+    }
+  }
+  
+  .tree-table{
+    width: 100%;
+    display: table;
+    empty-cells: show;
+
+    .tree-row {
+      padding: 0;
+      display: table-row;
+
+      .button{
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+      }
+      .folder-name-input{
+        inline-size: auto;
+        height: 30px;
+      }
+    }
+
+    .tree-row:hover {
+      background-color: #f1efef;
+    }
+
+    .tree-cell {
+      border-bottom: solid #b6b6b6 1px;
+      display: table-cell;
+      padding: 2px;
+      width: 15%;
+    }
+    
+    .fill-cell {
+      float:left;
+      display: table-cell;
+      width: stretch;
+      height: stretch;
+    }
+  }
+}

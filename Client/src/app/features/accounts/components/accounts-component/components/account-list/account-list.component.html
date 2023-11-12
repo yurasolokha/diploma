@@ -1,0 +1,38 @@
+<div class="content-wrapper">
+  <app-custom-tree *ngIf="accounts" 
+  #accountTree
+  [folderSelector]="folderSelector"
+  [itemSelector]="itemSelector"
+  [nameSelector]="nameSelector"
+  [sort]="accountsSort"
+  [data]="accounts" 
+  [itemActions]="accountActions"
+  [folderActions]="folderActions"
+  [allowActions]="allowActions"
+  [useCustomFolders]="true"
+  [afterTreeCreated]="updateFolders"
+  [displayedColumns]="displayedColumns">
+    <ng-template appTemplateName="name" let-item><span class="name c-pointer" (click)="selectAccount(item)">{{item.name}}</span></ng-template>
+    <ng-template appTemplateName="currency" let-item><span>{{item.currency?.code}}</span></ng-template>
+    <ng-template appTemplateName="balance" let-item><span>{{item.balance}}</span></ng-template>
+    <ng-template appTemplateName="recalculatedBalance" let-item><span>{{item?.recalculatedBalance ?? '--'}}</span></ng-template>
+    <ng-template appTemplateName="description" let-item><span>{{item.description}}</span></ng-template>
+
+    <ng-template appTemplateName="folder-name" let-node="node" let-control="control"><span class="name c-pointer" (click)="selectAccountFolder(control, node)">{{node.item}}</span></ng-template>
+
+    <ng-template appTemplateName="folder-currency" let-node="node">
+      <span>{{node.folderData.ignore ? '--' : node.folderData?.currency?.code}}</span>
+    </ng-template>
+
+    <ng-template appTemplateName="folder-balance" let-node="node">
+      <span>{{node.folderData.ignore ? '--' : node.folderData?.balance}}</span>
+    </ng-template>
+
+    <ng-template appTemplateName="folder-recalculatedBalance" let-node="node">
+      <span>{{node.folderData.ignore ? '--' : node.folderData?.recalculatedBalance}}</span>
+    </ng-template>
+
+  </app-custom-tree>
+</div>
+
+<app-loader *ngIf="isLoading" position="static"></app-loader>

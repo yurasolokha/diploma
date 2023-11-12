@@ -1,0 +1,167 @@
+@import 'text';
+@import 'variables';
+@import 'components';
+@import 'buttons';
+
+.content{
+  display: flex;
+  flex-flow: column;
+  height: stretch;
+  padding: 30px 20px;
+  background-color: $secondary-background;
+
+  .breadcrumbs{
+    @extend %primary-font;
+    font-size: $font-size-large;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+
+    mat-icon{
+      width: 32px;
+      height: 32px;
+      font-size: 32px;
+    }
+  }
+
+  .header{
+    display: flex;
+    flex-flow: column;
+    border-radius: 5px;
+    
+    .caption{
+      @extend %primary-font;
+
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 32px;
+      font-weight: 500;
+      vertical-align: center;
+      margin: 0;
+      padding: 10px 0;
+
+      .icon{
+        width: 45px;
+        height: 45px;
+        font-size: 45px;
+      }
+    }
+
+    .description{
+      @extend %primary-font;
+
+      font-size: $font-size-large;
+      margin: 0;
+      padding-left: 60px;
+    }
+  }
+
+  .body{
+    display: flex;
+    padding-top: 40px;
+    gap: 40px;
+
+    .section{
+      box-shadow: 0 0 7px rgba(0,0,0,0.25);
+      border-radius: 5px;
+      background-color: $primary-background;
+
+      .header{
+        background-color: $secondary-background-reverse;
+        padding-bottom: 15px;
+
+        .caption{
+          @extend %primary-font;
+
+          color: $primary-color-reverse;
+          font-size: $font-size-extra;
+          font-weight: 500;
+          letter-spacing: 0.75px;
+          margin: 10px 0 10px 10px;
+          
+          .icon {
+            color: $primary-color-reverse;
+
+            font-size: 25px;
+            width: 25px;
+            height: 25px;
+            margin-bottom: 5px;
+            margin-right: -5px;
+          }
+        }
+        .description{
+          @extend %primary-font;
+
+          color: $primary-color-reverse;
+          font-size: $font-size-normal;
+          font-weight: 500;
+          letter-spacing: 0.75px;
+          padding-left: 12px;
+        }
+      }
+    }
+
+    .aby-cash-import{
+      width: 525px;
+
+      .body{
+        height: 200px;
+        padding-top: 10px;
+
+        .drop-area{
+          width: 100%;
+          height: 100%;
+          padding: 10px;
+
+          .content{
+            align-items: center;
+            background-color: $primary-background;
+            gap: 25px;
+
+            .icon{
+              width: 40px;
+              height: 40px;
+              font-size: 40px;
+            }
+
+            .caption{
+              @extend %primary-font;
+
+              color: $primary-color;
+              font-size: $font-size-normal;
+              font-weight: 500;
+              letter-spacing: 0.75px;
+            }
+          }
+        }
+
+        .import-container{
+          width: 100%;
+          height: 70%;
+          display: flex;
+          flex-flow: column;
+          justify-content: center;
+          gap: 10px;
+          padding: 10px;
+          margin-left: 20%;
+          
+          .progress-bar{
+            width: 300px;
+          }
+
+          .progress-caption{
+            @extend %primary-font;
+
+            color: $primary-color;
+            font-size: $font-size-normal;
+            font-weight: 500;
+            letter-spacing: 0.75px;
+          }
+        }
+      }
+    }
+  }
+}

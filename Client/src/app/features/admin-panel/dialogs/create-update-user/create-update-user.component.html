@@ -1,0 +1,196 @@
+<app-dialog-layout
+  class="layout"
+  [model]="model"
+  (save)="save()"
+  (close)="close()"
+>
+  <form class="form" [formGroup]="form">
+    <div
+      class="field-wrapper"
+      [ngClass]="{ 'input-error': InputValidation('name') }"
+    >
+      <label class="caption">User Name</label>
+      <input
+        class="field"
+        formControlName="name"
+        type="text"
+        matInput
+        [readOnly]="model.isUpdate"
+      />
+      <p
+        class="input-data-error"
+        *ngIf="
+          InputValidation('name') &&
+          !containeValidationError('name', 'userNameAlreadyInUse')
+        "
+      >
+        Please enter valid user name
+      </p>
+      <p
+        class="input-data-error"
+        *ngIf="containeValidationError('name', 'userNameAlreadyInUse')"
+      >
+        user name already in use
+      </p>
+    </div>
+
+    <div
+      class="field-wrapper"
+      [ngClass]="{ 'input-error': InputValidation('email') }"
+    >
+      <label class="caption">Email</label>
+      <input
+        class="field"
+        formControlName="email"
+        type="email"
+        matInput
+        [readOnly]="model.isUpdate"
+      />
+      <p
+        class="input-data-error"
+        *ngIf="
+          InputValidation('email') &&
+          !containeValidationError('email', 'emailAlreadyInUse')
+        "
+      >
+        Please enter valid email
+      </p>
+      <p
+        class="input-data-error"
+        *ngIf="containeValidationError('email', 'emailAlreadyInUse')"
+      >
+        email already in use
+      </p>
+    </div>
+
+    <div
+      class="field-wrapper"
+      [ngClass]="{ 'input-error': InputValidation('firstName') }"
+    >
+      <label class="caption">First Name</label>
+      <input class="field" formControlName="firstName" type="text" matInput />
+      <p class="input-data-error" *ngIf="InputValidation('firstName')">
+        Please enter first name
+      </p>
+    </div>
+
+    <div
+      class="field-wrapper"
+      [ngClass]="{ 'input-error': InputValidation('middleName') }"
+    >
+      <label class="caption">Middle Name</label>
+      <input class="field" formControlName="middleName" type="text" matInput />
+      <p class="input-data-error" *ngIf="InputValidation('middleName')">
+        Please enter valid middle name
+      </p>
+    </div>
+
+    <div
+      class="field-wrapper"
+      [ngClass]="{ 'input-error': InputValidation('lastName') }"
+    >
+      <label class="caption">Last Name</label>
+      <input class="field" formControlName="lastName" type="text" matInput />
+      <p class="input-data-error" *ngIf="InputValidation('lastName')">
+        Please enter valid last name
+      </p>
+    </div>
+
+    <div class="fields-container">
+      <div
+        class="field-wrapper"
+        [ngClass]="{ 'input-error': InputValidation('password') }"
+      >
+        <label class="caption">{{model.isUpdate ? 'New ' : ''}}Password</label>
+        <input
+          class="field"
+          #password
+          formControlName="password"
+          type="password"
+          matInput
+          matTooltip="Password should contain at least 8 characters, 1 capital letter and 1 digit."
+          matTooltipShowDelay="300"
+        />
+        <mat-icon
+          class="icon"
+          (click)="
+            password.type === 'password'
+              ? (password.type = 'text')
+              : (password.type = 'password')
+          "
+        >
+          {{ password.type === "text" ? "visibility" : "visibility_off" }}
+        </mat-icon>
+      </div>
+
+      <div
+        class="field-wrapper"
+        [ngClass]="{ 'input-error': InputValidation('repeatPassword') }"
+      >
+        <label class="caption">Repeat Password</label>
+        <input
+          class="field"
+          #repeatPassword
+          formControlName="repeatPassword"
+          type="password"
+          matInput
+        />
+        <mat-icon
+          class="icon"
+          (click)="
+            repeatPassword.type === 'password'
+              ? (repeatPassword.type = 'text')
+              : (repeatPassword.type = 'password')
+          "
+        >
+          {{ repeatPassword.type === "text" ? "visibility" : "visibility_off" }}
+        </mat-icon>
+      </div>
+    </div>
+
+    <div
+      class="passwords-error"
+      *ngIf="InputValidation('password') || InputValidation('repeatPassword')"
+    >
+      <p class="input-data-error password" *ngIf="InputValidation('password')">
+        Please enter valid password
+      </p>
+      <p
+        class="input-data-error repeat-password"
+        *ngIf="InputValidation('repeatPassword')"
+      >
+        Please repeat password
+      </p>
+    </div>
+
+    <div
+      class="field-wrapper"
+      [ngClass]="{ 'input-error': InputValidation('company') }"
+    >
+      <label class="caption">Company</label>
+      <mat-select class="select" formControlName="company">
+        <mat-option *ngFor="let company of companies" [value]="company">
+          {{ company.name }}
+        </mat-option>
+      </mat-select>
+      <p class="input-data-error" *ngIf="InputValidation('company')">
+        Please select company
+      </p>
+    </div>
+
+    <div
+      class="field-wrapper"
+      [ngClass]="{ 'input-error': InputValidation('role') }"
+    >
+      <label class="caption">Role</label>
+      <mat-select class="select" formControlName="role">
+        <mat-option *ngFor="let role of roles" [value]="role">
+          {{ role.name }}
+        </mat-option>
+      </mat-select>
+      <p class="input-data-error" *ngIf="InputValidation('role')">
+        Please select role
+      </p>
+    </div>
+  </form>
+</app-dialog-layout>

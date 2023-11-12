@@ -1,0 +1,25 @@
+<div class="content-wrapper">
+  <div class="header-wrapper">
+    <h1 class="header">Abto Cash</h1>
+    <h3 class="sub-header">Welcome back!</h3>
+  </div>
+
+  <form class="form" [formGroup]="userInfo">
+    <div class="field-wrapper" [ngClass]="{'input-error': userInfo.controls['username'].touched && userInfo.controls['username'].invalid}">
+      <label class="caption">Username</label>
+      <input class="field" formControlName="username" type="text" matInput />
+    </div>
+
+    <div class="field-wrapper" [ngClass]="{'input-error': userInfo.controls['password'].touched && userInfo.controls['password'].invalid}">
+      <label class="caption">Password</label>
+      <input class="field" #password formControlName="password" type="password" matInput />
+      <mat-icon class="icon" (click)="(password.type === 'password') ? password.type = 'text' : password.type = 'password'">
+        {{password.type === 'text' ? 'visibility' : 'visibility_off'}}
+      </mat-icon>
+
+      <span *ngIf="isFailed"
+            class="incorrect-userdata">Username or Password are incorrect</span>
+    </div>
+    <button class="button" (click)="login()">Login</button>
+  </form>
+</div>

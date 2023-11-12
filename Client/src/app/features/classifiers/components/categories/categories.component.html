@@ -1,0 +1,32 @@
+<div class="content-wrapper">
+  <div class="breadcrumbs" (click)="goTo('classifiers')">
+    <mat-icon style="transform: rotate(180deg);">arrow_right_alt</mat-icon> Classifiers dashboard
+  </div>
+
+  <div class="header">
+    <h1 class="caption"><mat-icon class="icon">class</mat-icon>{{classifier?.pluralName}}</h1>
+  </div>
+
+  <div class="body-wrapper">
+    <app-custom-tree *ngIf="categories" 
+    [folderSelector]="folderSelector"
+    [itemSelector]="itemSelector"
+    [sort]="categoriesSort"
+    [data]="categories"
+    [folderActions]="menuActions"
+    [itemActions]="menuActions"
+    [emptyActions]="emptyMenuActions"
+    [allowActions]="allowActions"
+    [nameSelector]="nameSelector"
+    [displayedColumns]="displayedColumns">
+      <ng-template appTemplateName="name" let-item><span class="name c-pointer" (click)="selectCategory(item)">{{item.name}}</span></ng-template>
+      <ng-template appTemplateName="description" let-item><span>{{item.description}}</span></ng-template>
+    </app-custom-tree>
+  </div>
+
+  <div class="footer-wrapper">
+    
+  </div>
+</div>
+
+<app-loader *ngIf="isLoading" position="static"></app-loader>

@@ -1,0 +1,87 @@
+<div class="content-wrapper">
+  <div class="tree-header" *ngIf="displayHeader">
+    <div class="tree-header-cell" *ngFor="let column of displayedColumns">
+      <span>{{column.displayName}}</span>
+    </div>
+  </div>
+
+  <mat-tree [dataSource]="treeData" [treeControl]="treeControl" [trackBy]="trackBy" class="tree-table">
+    <!-- Empty Folder node -->
+    <mat-tree-node *matTreeNodeDef="let node; when: emptyFolder" class="tree-row" matTreeNodePadding (contextmenu)="onRightClick($event, node, folderActions)">
+      <div class="tree-cell" matTreeNodePadding>
+        <button class="button" mat-icon-button disabled></button>
+        <span>{{node.item}}</span>
+      </div>
+
+      <div class="tree-cell" *ngFor="let cell of columns"> </div>
+    </mat-tree-node>
+
+    <!-- Folder creating node -->
+    <mat-tree-node *matTreeNodeDef="let node; when: folderCreating" class="tree-row" matTreeNodePadding>
+      <div class="tree-cell" matTreeNodePadding>
+        <button class="button" mat-icon-button disabled></button>
+        <input #itemValue class="folder-name-input" matInput placeholder="Folder name" (keyup.enter)="saveFolder(node, itemValue.value)" (focusout)="saveFolder(node, itemValue.value)">
+      </div>
+
+      <div class="tree-cell" *ngFor="let cell of columns"> </div>
+    </mat-tree-node>
+
+    <!-- Item node -->
+    <mat-tree-node *matTreeNodeDef="let node; when: isItem" matTreeNodePadding class="tree-row" (contextmenu)="onRightClick($event, node, itemActions)">
+      <div class="tree-cell" matTreeNodePadding>
+        <button *ngIf="!node.expandable" class="button" mat-icon-button disabled></button>
+        <button *ngIf="node.expandable" class="button" mat-icon-button matTreeNodeToggle>
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+        <ng-container [ngTemplateOutlet]="viewTemplates[column.selector]" [ngTemplateOutletContext]="{$implicit:node.item}"></ng-container>
+      </div>
+
+      <div *ngFor="let column of columns" class="tree-cell">
+        <ng-container [ngTemplateOutlet]="viewTemplates[column.selector]" [ngTemplateOutletContext]="{$implicit:node.item}"></ng-container>
+      </div>
+    </mat-tree-node>
+
+    <!-- Folder with Items node -->
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding class="tree-row" (contextmenu)="onRightClick($event, node, folderActions)">
+      <div class="tree-cell" matTreeNodePadding>
+        <button class="button" mat-icon-button matTreeNodeToggle>
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+        <ng-container [ngTemplateOutlet]="viewTemplates[column.folderSelector]" [ngTemplateOutletContext]="{$implicit:node.item, item: node.item, node: node, control: treeControl}"></ng-container>
+      </div>
+
+      <div *ngFor="let column of columns" class="tree-cell">
+        <ng-container *ngIf="useCustomFolders" [ngTemplateOutlet]="viewTemplates[column.folderSelector]" 
+          [ngTemplateOutletContext]="{$implicit:node.item, item: node.item, node: node}"></ng-container>
+      </div>
+    </mat-tree-node>
+  </mat-tree>
+
+  <!-- No Data-->
+  <div
+    *ngIf="isNoData()"
+    class="empty"
+    style="text-align: center"
+    (contextmenu)="onRightClick($event, null, emptyActions)"
+  >
+    <img class="icon" src="assets/icons/empty-icon.png" />
+  </div>
+</div>
+
+<div style="visibility: hidden; position: fixed;"
+  [style.left]="menuTopLeftPosition.x"
+  [style.top]="menuTopLeftPosition.y"
+  [matMenuTriggerFor]="contextMenu"></div>
+
+<mat-menu #contextMenu="matMenu">
+  <ng-template matMenuContent let-item="item">
+    <button *ngFor="let action of item.actions" mat-menu-item (click)="action.action(item.data)">
+      <mat-icon>{{action.icon}}</mat-icon>
+      <span>{{action.caption}}</span>
+    </button>
+  </ng-template>
+</mat-menu>

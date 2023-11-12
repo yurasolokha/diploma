@@ -1,0 +1,4 @@
+<div class="content-wrapper">
+  <app-transactions-filter [filter]="filter" (filterChange)="filterChangeWithReset($event)"></app-transactions-filter>
+  <app-transactions-list [(filter)]="filter"></app-transactions-list>
+</div>

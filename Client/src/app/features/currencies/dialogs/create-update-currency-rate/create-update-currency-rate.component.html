@@ -1,0 +1,60 @@
+<app-dialog-layout class="layout" [model]="model" (save)="save()" (close)="close()">
+  <form class="form" [formGroup]="form">
+    <div class="date-picker" [ngClass]="{'input-error': InputValidation('date')}">
+      <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker1" formControlName="date">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </div>
+    
+    <p class="input-data-error" *ngIf="InputValidation('date') && !DateLockValidation('date')">Please enter valid date</p>
+    <p class="input-data-error" *ngIf="InputValidation('date') && DateLockValidation('date')">The period is blocked, you can't create the currency rate.</p>
+
+    <div class="form-row">
+      <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('firstCurrency')}">
+        <mat-select class="select" formControlName="firstCurrency" placeholder="First Currency">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let currency of currencies$ | async" [value]="currency"> {{currency.name}} </mat-option>
+        </mat-select>
+      </div>
+
+      <button mat-icon-button color="primary" (click)="swapCurrencies()"><mat-icon>swap_horiz</mat-icon></button>
+
+      <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('secondCurrency')}">
+        <mat-select class="select" formControlName="secondCurrency" placeholder="Second Currency">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let currency of currencies$ | async" [value]="currency"> {{currency.name}} </mat-option>
+        </mat-select>
+      </div>
+    </div>
+
+    <div class="currencies-rates-error" *ngIf="InputValidation('firstCurrency') || InputValidation('secondCurrency')">
+      <p class="input-data-error first" *ngIf="InputValidation('firstCurrency')">
+        Invalid first currency
+      </p>
+      <p class="input-data-error second" *ngIf="InputValidation('secondCurrency')">
+        Invalid second currency
+      </p>
+    </div>
+    
+    <div class="form-row">
+      <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('firstRate')}">
+        <label class="caption">First Rate</label>
+        <input class="field" formControlName="firstRate" type="text" matInput placeholder="Rate"/>
+      </div>
+
+      <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('secondRate')}">
+        <label class="caption">Second Rate</label>
+        <input class="field" formControlName="secondRate" type="text" matInput placeholder="Rate"/>
+      </div>
+    </div>
+
+    <div class="currencies-rates-error" *ngIf="InputValidation('firstRate') || InputValidation('secondRate')">
+      <p class="input-data-error first" *ngIf="InputValidation('firstRate')">
+        Invalid first rate
+      </p>
+      <p class="input-data-error second" *ngIf="InputValidation('secondRate')">
+        Invalid second rate
+      </p>
+    </div>
+  </form>
+</app-dialog-layout>

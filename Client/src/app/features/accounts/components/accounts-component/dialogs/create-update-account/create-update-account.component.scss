@@ -1,0 +1,19 @@
+@import 'forms';
+
+.layout{
+  display: block;
+  width: 425px;
+  padding: 0 20px;
+
+  .form{
+    @extend %primary-form;
+    
+    gap: 20px;
+
+    .input-data-error {
+      color: $error-color;
+      margin: 0;
+      margin-top: 10px;
+    }
+  }
+}
