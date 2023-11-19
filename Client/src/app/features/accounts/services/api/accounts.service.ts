@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AccountFilterModel } from 'src/app/features/shared/models/account-filter.model';
-import { AccountModel } from 'src/app/features/shared/models/account.model';
+import {AccountCreateRequest, AccountModel} from 'src/app/features/shared/models/account.model';
 import { AbstractRestService } from 'src/app/utilities/services/abstract-rest.service';
 
 @Injectable({ providedIn: 'root' })
@@ -12,8 +12,8 @@ export class AccountsService  extends AbstractRestService {
     return this.postItem(`accounts/accounts`, filter);
   }
 
-  public createAccount(account: AccountModel) {
-    return this.putItem(`accounts/create-account`, account);
+  public createAccount(accountCreateRequest: AccountCreateRequest) {
+    return this.putItem(`accounts/create-account`, accountCreateRequest);
   }
 
   public updateAccount(account: AccountModel) {

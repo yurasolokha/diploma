@@ -1,258 +1,385 @@
 <div class="content-wrapper">
-  <div class="loading-state" [class.loading-state]="dataSource.loading$ | async">
-    <div class="table-wrapper">
-      <table mat-table *ngIf="!!dataSource.data" #table selectableRow [dataSource]="dataSource" matSort
-        matSortActive="date" matSortDirection="desc" (draggableColumns)="swapColumns($event)" class="table">
-        
-        <!--  -->
-        <!-- <ng-container matColumnDef="select">
-          <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
-              [indeterminate]="selection.hasValue() && !isAllSelected()">
-            </mat-checkbox>
-          </th>
-          <td mat-cell *matCellDef="let row">
-            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-              [checked]="selection.isSelected(row)">
-            </mat-checkbox>
-          </td>
-        </ng-container> -->
+    <div class="loading-state" [class.loading-state]="dataSource.loading$ | async">
+      <div class="table-wrapper">
+        <table mat-table
+               *ngIf="!!dataSource.data"
+               #table
+               selectableRow
+               [dataSource]="dataSource"
+               matSort
+               matSortActive="date"
+               matSortDirection="desc"
+               (draggableColumns)="swapColumns($event)"
+               class="table">
 
-        <!-- isExecuted -->
-        <ng-container matColumnDef="isExecuted">
-          <th resizableColumn mat-header-cell *matHeaderCellDef class="header" mat-sort-header>
-            <div class="header-content">
-              <button class="button" mat-icon-button (click)="removeColumn('isExecuted')">
-                <mat-icon>close</mat-icon>
-              </button>
-              <span>Executed</span>
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let transaction" style="width: 50px; margin-left: 5px;" class="cell center-cell">
-            <mat-checkbox [checked]="transaction.isExecuted" [class.mat-checkbox-disabled]="false"
-              disabled></mat-checkbox>
-          </td>
-        </ng-container>
+          <!-- isExecuted -->
+          <ng-container matColumnDef="isExecuted">
+            <th resizableColumn
+                mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header>
+              <div class="header-content">
+                <button class="button"
+                        mat-icon-button
+                        (click)="removeColumn('isExecuted')">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <span>Executed</span>
+              </div>
+            </th>
+            <td mat-cell
+                *matCellDef="let transaction"
+                style="width: 50px; margin-left: 5px;"
+                class="cell center-cell">
+              <mat-checkbox [checked]="transaction.isExecuted"
+                            [class.mat-checkbox-disabled]="false"
+                            disabled></mat-checkbox>
+            </td>
+          </ng-container>
 
-        <!-- Date -->
-        <ng-container matColumnDef="date">
-          <th resizableColumn mat-header-cell *matHeaderCellDef class="header" mat-sort-header>
-            <div class="header-content">
-              <button class="button" mat-icon-button (click)="removeColumn('date')">
-                <mat-icon>close</mat-icon>
-              </button>
-              <span>Date</span>
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let transaction" class="cell center-cell"> {{ transaction.date | date:format}} </td>
-        </ng-container>
+          <!-- Date -->
+          <ng-container matColumnDef="date">
+            <th resizableColumn
+                mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header>
+              <div class="header-content">
+                <button class="button"
+                        mat-icon-button
+                        (click)="removeColumn('date')">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <span>Date</span>
+              </div>
+            </th>
+            <td mat-cell
+                *matCellDef="let transaction"
+                class="cell center-cell"> {{ transaction.date | date:format}} </td>
+          </ng-container>
 
-        <!-- Account -->
-        <ng-container matColumnDef="account">
-          <th resizableColumn mat-header-cell *matHeaderCellDef class="header" mat-sort-header>
-            <div class="header-content">
-              <button class="button" mat-icon-button (click)="removeColumn('account')">
-                <mat-icon>close</mat-icon>
-              </button>
-              <span>Account</span>
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let transaction" class="cell text-cell c-pointer underline-hover"
-            (click)="selectAccount(transaction.account)">
-            {{transaction.account.currency.code}} {{transaction.account.name}}
-          </td>
-        </ng-container>
+          <!-- Account -->
+          <ng-container matColumnDef="account">
+            <th resizableColumn
+                mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header>
+              <div class="header-content">
+                <button class="button"
+                        mat-icon-button
+                        (click)="removeColumn('account')">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <span>Account</span>
+              </div>
+            </th>
+            <td mat-cell
+                *matCellDef="let transaction"
+                class="cell text-cell c-pointer underline-hover"
+                (click)="selectAccount(transaction.account)">
+              {{transaction.account.currency.code}} {{transaction.account.name}}
+            </td>
+          </ng-container>
 
-        <!-- Amount -->
-        <ng-container matColumnDef="amount">
-          <th resizableColumn mat-header-cell *matHeaderCellDef class="header" mat-sort-header>
-            <div class="header-content">
-              <button class="button" mat-icon-button (click)="removeColumn('amount')">
-                <mat-icon>close</mat-icon>
-              </button>
-              <span>Amount</span>
-            </div>
-          </th>
+          <!-- Amount -->
+          <ng-container matColumnDef="amount">
+            <th resizableColumn
+                mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header>
+              <div class="header-content">
+                <button class="button"
+                        mat-icon-button
+                        (click)="removeColumn('amount')">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <span>Amount</span>
+              </div>
+            </th>
 
-          <td mat-cell *matCellDef="let transaction" [ngClass]="{
-            'cell center-cell': true, 
-            'income-cell': transaction.amount >= 0, 
+            <td mat-cell
+                *matCellDef="let transaction"
+                [ngClass]="{
+            'cell center-cell': true,
+            'income-cell': transaction.amount >= 0,
             'expense-cell': transaction.amount < 0 }">
-            {{transaction.amount | number: "2.2-2"}}
-          </td>
-        </ng-container>
+              {{transaction.amount | moneyFormat}}
+            </td>
+          </ng-container>
 
-        <!-- Balance -->
-        <ng-container matColumnDef="balance">
-          <th resizableColumn mat-header-cell *matHeaderCellDef class="header" mat-sort-header>
-            <div class="header-content">
-              <button class="button" mat-icon-button (click)="removeColumn('balance')">
-                <mat-icon>close</mat-icon>
-              </button>
-              <span>Balance</span>
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let transaction" class="cell center-cell"> {{transaction.balance | number: "2.2-2"}}
-          </td>
-        </ng-container>
+          <!-- Balance -->
+          <ng-container matColumnDef="balance">
+            <th resizableColumn
+                mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header>
+              <div class="header-content">
+                <button class="button"
+                        mat-icon-button
+                        (click)="removeColumn('balance')">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <span>Balance</span>
+              </div>
+            </th>
+            <td mat-cell
+                *matCellDef="let transaction"
+                class="cell center-cell"> {{transaction.balance | moneyFormat}} </td>
+          </ng-container>
 
-        <!-- Company -->
-        <ng-container matColumnDef="company">
-          <th resizableColumn mat-header-cell *matHeaderCellDef class="header" mat-sort-header>
-            <div class="header-content">
-              <button class="button" mat-icon-button (click)="removeColumn('company')">
-                <mat-icon>close</mat-icon>
-              </button>
-              <span>Company</span>
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let transaction" class="cell text-cell"> {{transaction.user.company.name}} </td>
-        </ng-container>
+          <!-- Company -->
+          <ng-container matColumnDef="company">
+            <th resizableColumn
+                mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header>
+              <div class="header-content">
+                <button class="button"
+                        mat-icon-button
+                        (click)="removeColumn('company')">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <span>Company</span>
+              </div>
+            </th>
+            <td mat-cell
+                *matCellDef="let transaction"
+                class="cell text-cell"> {{transaction.user.company.name}} </td>
+          </ng-container>
 
-        <!-- User -->
-        <ng-container matColumnDef="user">
-          <th resizableColumn mat-header-cell *matHeaderCellDef class="header" mat-sort-header>
-            <div class="header-content">
-              <button class="button" mat-icon-button (click)="removeColumn('user')">
-                <mat-icon>close</mat-icon>
-              </button>
-              <span>User</span>
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let transaction" class="cell text-cell"> {{transaction.user.userName}} </td>
-        </ng-container>
+          <!-- User -->
+          <ng-container matColumnDef="user">
+            <th resizableColumn
+                mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header>
+              <div class="header-content">
+                <button class="button"
+                        mat-icon-button
+                        (click)="removeColumn('user')">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <span>User</span>
+              </div>
+            </th>
+            <td mat-cell
+                *matCellDef="let transaction"
+                class="cell text-cell"> {{transaction.user.userName}} </td>
+          </ng-container>
 
-        <!-- Destination Account -->
-        <ng-container matColumnDef="destinationAccount">
-          <th resizableColumn mat-header-cell *matHeaderCellDef class="header" mat-sort-header>
-            <div class="header-content">
-              <button class="button" mat-icon-button (click)="removeColumn('destinationAccount')">
-                <mat-icon>close</mat-icon>
-              </button>
-              <span>Dest. Account</span>
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let transaction" class="cell c-pointer underline-hover text-cell"
-            (click)="selectAccount(transaction.destinationAccount)">
-            {{transaction.destinationAccount ? transaction.destinationAccount.currency.code + ' - ' +
-            transaction.destinationAccount.name : ''}}
-          </td>
-        </ng-container>
+          <!-- Destination Account -->
+          <ng-container matColumnDef="destinationAccount">
+            <th resizableColumn
+                mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header>
+              <div class="header-content">
+                <button class="button"
+                        mat-icon-button
+                        (click)="removeColumn('destinationAccount')">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <span>Dest. Account</span>
+              </div>
+            </th>
+            <td mat-cell
+                *matCellDef="let transaction"
+                class="cell c-pointer underline-hover text-cell"
+                (click)="selectAccount(transaction.destinationAccount)">
+              {{transaction.destinationAccount ? transaction.destinationAccount.currency.code + ' - ' + transaction.destinationAccount.name : ''}}
+            </td>
+          </ng-container>
 
-        <!-- Destination Amount -->
-        <ng-container matColumnDef="destinationAmount">
-          <th resizableColumn mat-header-cell *matHeaderCellDef class="header" mat-sort-header>
-            <div class="header-content">
-              <button class="button" mat-icon-button (click)="removeColumn('destinationAmount')">
-                <mat-icon>close</mat-icon>
-              </button>
-              <span>Dest. Amount</span>
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let transaction" [ngClass]="{
-            'cell center-cell': true, 
-            'income-cell': transaction.destinationAmount >= 0, 
+          <!-- Destination Amount -->
+          <ng-container matColumnDef="destinationAmount">
+            <th resizableColumn
+                mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header>
+              <div class="header-content">
+                <button class="button"
+                        mat-icon-button
+                        (click)="removeColumn('destinationAmount')">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <span>Dest. Amount</span>
+              </div>
+            </th>
+            <td mat-cell
+                *matCellDef="let transaction"
+                [ngClass]="{
+            'cell center-cell': true,
+            'income-cell': transaction.destinationAmount >= 0,
             'expense-cell': transaction.destinationAmount < 0 }">
-            {{transaction.destinationAmount | number: "2.2-2"}}
-          </td>
-        </ng-container>
+              {{transaction.destinationAmount | moneyFormat}}
+            </td>
+          </ng-container>
 
-        <!-- Destination Balance -->
-        <ng-container matColumnDef="destinationBalance">
-          <th resizableColumn mat-header-cell *matHeaderCellDef class="header" mat-sort-header>
-            <div class="header-content">
-              <button class="button" mat-icon-button (click)="removeColumn('destinationBalance')">
-                <mat-icon>close</mat-icon>
-              </button>
-              <span>Dest. Balance</span>
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let transaction" class="cell center-cell"> {{transaction.destinationBalance |
-            number: "2.2-2"}} </td>
-        </ng-container>
+          <!-- Destination Balance -->
+          <ng-container matColumnDef="destinationBalance">
+            <th resizableColumn
+                mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header>
+              <div class="header-content">
+                <button class="button"
+                        mat-icon-button
+                        (click)="removeColumn('destinationBalance')">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <span>Dest. Balance</span>
+              </div>
+            </th>
+            <td mat-cell
+                *matCellDef="let transaction"
+                class="cell center-cell"> {{transaction.destinationBalance | moneyFormat}} </td>
+          </ng-container>
 
-        <!-- Comment 1 -->
-        <ng-container matColumnDef="comment0">
-          <th resizableColumn mat-header-cell *matHeaderCellDef class="header" mat-sort-header>
-            <div class="header-content">
-              <button class="button" mat-icon-button (click)="removeColumn('comment0')">
-                <mat-icon>close</mat-icon>
-              </button>
-              <span>Comment 1</span>
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let transaction" class="cell text-cell"> {{transaction.comment0}} </td>
-        </ng-container>
+          <!-- Comment 1 -->
+          <ng-container matColumnDef="comment0">
+            <th resizableColumn
+                mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header>
+              <div class="header-content">
+                <button class="button"
+                        mat-icon-button
+                        (click)="removeColumn('comment0')">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <span>Comment 1</span>
+              </div>
+            </th>
+            <td mat-cell
+                *matCellDef="let transaction"
+                class="cell text-cell"> {{transaction.comment0}} </td>
+          </ng-container>
 
-        <!-- Comment 2 -->
-        <ng-container matColumnDef="comment1">
-          <th resizableColumn mat-header-cell *matHeaderCellDef class="header" mat-sort-header>
-            <div class="header-content">
-              <button class="button" mat-icon-button (click)="removeColumn('comment1')">
-                <mat-icon>close</mat-icon>
-              </button>
-              <span>Comment 2</span>
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let transaction" class="cell text-cell"> {{transaction.comment1}} </td>
-        </ng-container>
+          <!-- Comment 2 -->
+          <ng-container matColumnDef="comment1">
+            <th resizableColumn
+                mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header>
+              <div class="header-content">
+                <button class="button"
+                        mat-icon-button
+                        (click)="removeColumn('comment1')">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <span>Comment 2</span>
+              </div>
+            </th>
+            <td mat-cell
+                *matCellDef="let transaction"
+                class="cell text-cell"> {{transaction.comment1}} </td>
+          </ng-container>
 
-        <!-- Classifiers will be render dynamically  -->
-        <ng-container [matColumnDef]="column.propertyName" *ngFor="let column of classifierColumns">
-          <th resizableColumn mat-header-cell *matHeaderCellDef class="header" mat-sort-header>
-            <div class="header-content">
-              <button class="button" mat-icon-button (click)="removeColumn(column.propertyName)">
-                <mat-icon>close</mat-icon>
-              </button>
-              <span>{{column.columnName}}</span>
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let row" class="cell text-cell">
-            {{getTableCell(column, row)}}
-          </td>
-        </ng-container>
+          <!-- Classifiers will be render dynamically  -->
+          <ng-container [matColumnDef]="column.propertyName"
+                        *ngFor="let column of classifierColumns">
+            <th resizableColumn
+                mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header>
+              <div class="header-content">
+                <button class="button"
+                        mat-icon-button
+                        (click)="removeColumn(column.propertyName)">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <span>{{column.columnName}}</span>
+              </div>
+            </th>
+            <td mat-cell
+                *matCellDef="let row"
+                class="cell text-cell">
+              {{getTableCell(column, row)}}
+            </td>
+          </ng-container>
 
-        <!-- Tr types -->
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef class="header" mat-sort-header style="width: 50px;"></th>
-          <td mat-cell *matCellDef="let transaction" class="actions-cell">
-            <div class="actions-wrapper">
-              <mat-icon class="transaction-type" *ngIf="transaction.type === 'Transfer'"
-                style="color: #f3a530">swap_horiz</mat-icon>
-              <mat-icon class="transaction-type" *ngIf="transaction.type === 'Expense'"
-                style="color: #fb3224">trending_down</mat-icon>
-              <mat-icon class="transaction-type" *ngIf="transaction.type === 'Income'"
-                style="color: #5cb936">trending_up</mat-icon>
-            </div>
-          </td>
-        </ng-container>
+          <!-- Tr types -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell
+                *matHeaderCellDef
+                class="header"
+                mat-sort-header
+                style="width: 50px;"></th>
+            <td mat-cell
+                *matCellDef="let transaction"
+                class="actions-cell">
+              <div class="actions-wrapper">
+                <mat-icon class="transaction-type"
+                          *ngIf="transaction.type === 'Transfer'"
+                          style="color: #f3a530">swap_horiz</mat-icon>
+                <mat-icon class="transaction-type"
+                          *ngIf="transaction.type === 'Expense'"
+                          style="color: #fb3224">trending_down</mat-icon>
+                <mat-icon class="transaction-type"
+                          *ngIf="transaction.type === 'Income'"
+                          style="color: #5cb936">trending_up</mat-icon>
+              </div>
+            </td>
+          </ng-container>
 
-        <tr mat-header-row class="header-row" *matHeaderRowDef="tableColumns; sticky: true"
-          (contextmenu)="onRightClick($event, undefined, menuActions)"></tr>
+          <tr mat-header-row
+              class="header-row"
+              *matHeaderRowDef="tableColumns; sticky: true"
+              (contextmenu)="onRightClick($event, undefined, menuActions)"></tr>
 
-        <tr [id]="row.id" mat-row class="table-row" *matRowDef="let row; columns: tableColumns;"
-          (contextmenu)="onRightClick($event, row, menuActions)"></tr>
+          <tr [id]="row.id"
+              mat-row
+              class="table-row"
+              *matRowDef="let row; columns: tableColumns;"
+              (contextmenu)="onRightClick($event, row, menuActions)"></tr>
 
-        <tr [id]="undefined" class="empty" (contextmenu)="onRightClick($event, undefined, menuActions)" *matNoDataRow>
-          <td style="text-align: center;" [attr.colspan]="displayedColumns.length">
-            <img class="icon" src="assets/icons/empty-icon.png" />
-          </td>
-        </tr>
-      </table>
+          <tr [id]="undefined"
+              class="empty"
+              (contextmenu)="onRightClick($event, undefined, menuActions)"
+              *matNoDataRow>
+            <td style="text-align: center;"
+                [attr.colspan]="displayedColumns.length">
+              <img class="icon"
+                   src="assets/icons/empty-icon.png" />
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <mat-paginator class="paginator"
+      [pageSizeOptions]="pageSizes"
+      showFirstLastButtons></mat-paginator>
     </div>
 
-    <mat-paginator class="paginator" [pageSizeOptions]="pageSizes" showFirstLastButtons></mat-paginator>
-  </div>
-
-  <app-loader *ngIf="dataSource.loading$ | async" style="height: 100%;" position="static"></app-loader>
+  <app-loader *ngIf="dataSource.loading$ | async"
+              style="height: 100%;"
+              position="static"></app-loader>
 </div>
 
-<div style="visibility: hidden; position: fixed;" [style.left]="menuTopLeftPosition.x"
-  [style.top]="menuTopLeftPosition.y" [matMenuTriggerFor]="contextMenu"></div>
+<div style="visibility: hidden; position: fixed;"
+      [style.left]="menuTopLeftPosition.x"
+      [style.top]="menuTopLeftPosition.y"
+      [matMenuTriggerFor]="contextMenu"></div>
 
-<mat-menu #contextMenu="matMenu" (appClickOutside)="matMenuTrigger.closeMenu()" classToCheck="mat-menu-content">
-  <ng-template matMenuContent let-item="item">
-    <button *ngFor="let action of item.actions" mat-menu-item (click)="action.action(item.data)">
+<mat-menu #contextMenu="matMenu"
+          (appClickOutside)="matMenuTrigger.closeMenu()" classToCheck="mat-menu-content">
+  <ng-template matMenuContent
+                let-item="item">
+    <button *ngFor="let action of item.actions"
+            mat-menu-item
+            (click)="action.action(item.data)">
       <mat-icon>{{action.icon}}</mat-icon>
       <span>{{action.caption}}</span>
     </button>

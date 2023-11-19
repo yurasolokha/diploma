@@ -43,7 +43,6 @@ import { CategoryModel } from 'src/app/features/shared/models/category.model';
 import { TransactionType } from 'src/app/utilities/costants/transaction-type.constant';
 import { TransactionFileImportComponent } from '../../dialogs/transaction-file-import/transaction-file-import.component';
 import { ImportService } from 'src/app/features/admin-panel/services/import.service';
-import { SelectionModel } from '@angular/cdk/collections';
 
 @UntilDestroy()
 @Component({
@@ -57,7 +56,6 @@ export class TransactionsListComponent implements OnInit, AfterViewInit {
 
   private _sortSubscription: Subscription | null = null;
   private _paginatorSubscription: Subscription | null = null;
-  public selection = new SelectionModel<TransactionExtendedModel>(true, []);
 
   @ViewChild(MatPaginator) set paginator(value: MatPaginator) {
     this._paginator = value;

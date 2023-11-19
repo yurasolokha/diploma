@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DecimalPipe} from '@angular/common';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -32,6 +32,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { CustomTreeSelectComponent } from './components/custom-tree-select/custom-tree-select.component';
 import { ImportDialogComponent } from './dialogs/import-dialog/import-dialog.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { UserAccessesControlComponent } from './user-accesses-control/user-accesses-control.component';
+import {MatListModule} from "@angular/material/list";
+import { MoneyFormatPipe } from './pipes/money-format.pipe';
 
 const components = [
   NavBarComponent,
@@ -54,6 +57,7 @@ const pipes = [
   UserFullNamePipe,
   AsStringPipe,
   DateRangePipe,
+  MoneyFormatPipe
 ];
 
 const directives = [
@@ -70,6 +74,7 @@ const directives = [
     ...directives,
     TemplateNameDirective,
     ClickOutsideDirective,
+    UserAccessesControlComponent,
   ],
   imports: [
     CommonModule,
@@ -82,7 +87,9 @@ const directives = [
     MatSelectModule,
     MatCheckboxModule,
     MatProgressBarModule,
+    MatListModule,
   ],
+  providers: [DecimalPipe],
   exports: [
     ...components,
     ...pipes,
@@ -90,6 +97,7 @@ const directives = [
     MatSnackBarModule,
     TemplateNameDirective,
     ClickOutsideDirective,
+    UserAccessesControlComponent,
   ],
 })
 export class SharedModule {}

@@ -24,6 +24,7 @@ import { MatTableModule } from '@angular/material/table';
 import { SharedModule } from '../shared/shared.module';
 import { MatTreeModule } from '@angular/material/tree';
 import { CreateUpdateAccountComponent } from './components/accounts-component/dialogs/create-update-account/create-update-account.component';
+import {MatListModule} from "@angular/material/list";
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { CreateUpdateAccountComponent } from './components/accounts-component/di
     MatButtonModule,
     FormsModule,
     MatTreeModule,
+    MatListModule,
   ]
 })
 export class AccountsModule { }

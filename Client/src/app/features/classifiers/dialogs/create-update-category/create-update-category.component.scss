@@ -2,18 +2,29 @@
 
 .layout{
   display: block;
-  width: 425px;
+  width: 800px;
   padding: 0 20px;
 
   .form{
     @extend %primary-form;
-    
-    gap: 20px;
+    display: flex;
+    flex-direction: row;
 
-    .input-data-error {
-      color: $error-color;
-      margin: 0;
-      margin-top: 5px;
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 20px;
+      .input-data-error {
+        color: $error-color;
+        margin: 0;
+        margin-top: 10px;
+      }
+    }
+    .user-access-control-container{
+      flex: 1;
+      height: 325px;
+      overflow-y: scroll;
     }
   }
 }

@@ -1,34 +1,40 @@
 <app-dialog-layout class="layout" [model]="model" (save)="save()" (close)="close()">
   <form class="form" [formGroup]="form">
-    <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('name')}">
-      <label class="caption">Account Name</label>
-      <input class="field" formControlName="name" type="text" matInput />
-      <p class="input-data-error" *ngIf="InputValidation('name')">Please enter valid account name</p>
+    <div class="input-container">
+      <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('name')}">
+        <label class="caption">Account Name</label>
+        <input class="field" formControlName="name" type="text" matInput />
+        <p class="input-data-error" *ngIf="InputValidation('name')">Please enter valid account name</p>
+      </div>
+
+      <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('description')}">
+        <label class="caption">Description</label>
+        <input class="field" formControlName="description" type="text" matInput />
+      </div>
+
+      <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('path')}">
+        <label class="caption">Path</label>
+        <input class="field" formControlName="path" type="text" matInput [readOnly]="model.isUpdate" [disabled]="model.isUpdate"/>
+        <p class="input-data-error" *ngIf="InputValidation('path')">Please enter valid path</p>
+      </div>
+
+      <div class="field-wrapper" [ngClass]="{'input-error': InputNumberValidation('startingBalance')}">
+        <label class="caption">Starting Balance</label>
+        <input class="field" formControlName="startingBalance" type="text" matInput [readOnly]="model.isUpdate" [disabled]="model.isUpdate"/>
+        <p class="input-data-error" *ngIf="InputNumberValidation('startingBalance')">Please enter valid balance</p>
+      </div>
+
+      <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('currency')}">
+        <label class="caption">Currency</label>
+        <mat-select class="select" formControlName="currency" [disabled]="model.isUpdate">
+          <mat-option *ngFor="let currency of currencies$ | async" [value]="currency"> {{currency.name}} </mat-option>
+        </mat-select>
+        <p class="input-data-error" *ngIf="InputValidation('currency')">Please select currency</p>
+      </div>
+    </div>
+    <div class="user-access-control-container">
+      <app-user-accesses-control *ngIf="!model.isUpdate" formControlName="userAccesses"></app-user-accesses-control>
     </div>
 
-    <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('description')}">
-      <label class="caption">Description</label>
-      <input class="field" formControlName="description" type="text" matInput />
-    </div>
-
-    <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('path')}">
-      <label class="caption">Path</label>
-      <input class="field" formControlName="path" type="text" matInput [readOnly]="model.isUpdate" [disabled]="model.isUpdate"/>
-      <p class="input-data-error" *ngIf="InputValidation('path')">Please enter valid path</p>
-    </div>
-
-    <div class="field-wrapper" [ngClass]="{'input-error': InputNumberValidation('startingBalance')}">
-      <label class="caption">Starting Balance</label>
-      <input class="field" formControlName="startingBalance" type="text" matInput [readOnly]="model.isUpdate" [disabled]="model.isUpdate"/>
-      <p class="input-data-error" *ngIf="InputNumberValidation('startingBalance')">Please enter valid balance</p>
-    </div>
-
-    <div class="field-wrapper" [ngClass]="{'input-error': InputValidation('currency')}">
-      <label class="caption">Currency</label>
-      <mat-select class="select" formControlName="currency" [disabled]="model.isUpdate">
-        <mat-option *ngFor="let currency of currencies$ | async" [value]="currency"> {{currency.name}} </mat-option>
-      </mat-select>
-      <p class="input-data-error" *ngIf="InputValidation('currency')">Please select currency</p>
-    </div>
   </form>
 </app-dialog-layout>

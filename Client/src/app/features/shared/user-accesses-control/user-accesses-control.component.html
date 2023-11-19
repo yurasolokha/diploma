@@ -1,0 +1,7 @@
+<mat-selection-list (selectionChange)="selectionChanged($event)">
+  <mat-list-option *ngFor="let access of userAccesses" [value]="access.userId"
+                   [disabled]="isDisabled(access.userId)"
+                   [selected]="isSelected(access.userId)">
+    {{access.userFirstName + ' ' + access.userLastName + '(' + access.userRole + ')'}}
+  </mat-list-option>
+</mat-selection-list>

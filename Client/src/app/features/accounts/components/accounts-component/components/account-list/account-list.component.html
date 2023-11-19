@@ -1,11 +1,11 @@
 <div class="content-wrapper">
-  <app-custom-tree *ngIf="accounts" 
+  <app-custom-tree *ngIf="accounts"
   #accountTree
   [folderSelector]="folderSelector"
   [itemSelector]="itemSelector"
   [nameSelector]="nameSelector"
   [sort]="accountsSort"
-  [data]="accounts" 
+  [data]="accounts"
   [itemActions]="accountActions"
   [folderActions]="folderActions"
   [allowActions]="allowActions"
@@ -14,8 +14,8 @@
   [displayedColumns]="displayedColumns">
     <ng-template appTemplateName="name" let-item><span class="name c-pointer" (click)="selectAccount(item)">{{item.name}}</span></ng-template>
     <ng-template appTemplateName="currency" let-item><span>{{item.currency?.code}}</span></ng-template>
-    <ng-template appTemplateName="balance" let-item><span>{{item.balance}}</span></ng-template>
-    <ng-template appTemplateName="recalculatedBalance" let-item><span>{{item?.recalculatedBalance ?? '--'}}</span></ng-template>
+    <ng-template appTemplateName="balance" let-item><span>{{item.balance | moneyFormat}}</span></ng-template>
+    <ng-template appTemplateName="recalculatedBalance" let-item><span>{{(item?.recalculatedBalance | moneyFormat) ?? '--'}}</span></ng-template>
     <ng-template appTemplateName="description" let-item><span>{{item.description}}</span></ng-template>
 
     <ng-template appTemplateName="folder-name" let-node="node" let-control="control"><span class="name c-pointer" (click)="selectAccountFolder(control, node)">{{node.item}}</span></ng-template>
@@ -25,11 +25,11 @@
     </ng-template>
 
     <ng-template appTemplateName="folder-balance" let-node="node">
-      <span>{{node.folderData.ignore ? '--' : node.folderData?.balance}}</span>
+      <span>{{node.folderData.ignore ? '--' : node.folderData?.balance | moneyFormat}}</span>
     </ng-template>
 
     <ng-template appTemplateName="folder-recalculatedBalance" let-node="node">
-      <span>{{node.folderData.ignore ? '--' : node.folderData?.recalculatedBalance}}</span>
+      <span>{{node.folderData.ignore ? '--' : node.folderData?.recalculatedBalance | moneyFormat}}</span>
     </ng-template>
 
   </app-custom-tree>

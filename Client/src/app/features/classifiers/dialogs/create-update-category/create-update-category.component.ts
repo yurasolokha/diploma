@@ -4,16 +4,21 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SimpleFormDialog } from 'src/app/features/shared/dialog-models/simple-form.dialog';
 import { CategoryModel } from 'src/app/features/shared/models/category.model';
 import { Guid } from 'src/app/utilities/types/guid';
+import {AccessesService} from "../../../admin-panel/services/accesses.service";
+import {UserAccessModel} from "../../../shared/models/user-access.model";
+import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 
 @Component({
   templateUrl: './create-update-category.component.html',
   styleUrls: ['./create-update-category.component.scss']
 })
+@UntilDestroy()
 export class CreateUpdateCategoryComponent extends SimpleFormDialog implements OnInit {
   public isRoot;
   public categoryTypes;
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: any, dialog: MatDialogRef<CreateUpdateCategoryComponent>) {
+  constructor(@Inject(MAT_DIALOG_DATA) private data: any, dialog: MatDialogRef<CreateUpdateCategoryComponent>,
+              private accessesService: AccessesService) {
     super( !data.category ? {
       isUpdate: false,
       headerCaption: 'Create New Category',
@@ -28,8 +33,18 @@ export class CreateUpdateCategoryComponent extends SimpleFormDialog implements O
     this.categoryTypes = data.categoryTypes;
   }
 
+  userDefaultAssesses: UserAccessModel[] = [];
+
   ngOnInit(): void {
-    this.model.initForm();
+    if(this.model.isUpdate){
+      this.model.initForm();
+    }
+    else {
+      this.accessesService.getUserDefaultAccesses().pipe(untilDestroyed(this)).subscribe(res => {
+        this.userDefaultAssesses = res;
+        this.model.initForm();
+      });
+    }
   }
 
   InputValidation(formControlName: string): boolean {
@@ -39,15 +54,25 @@ export class CreateUpdateCategoryComponent extends SimpleFormDialog implements O
   }
 
   protected override map = ((form: FormGroup) => {
-    const value = form.getRawValue();
-    return {
-      id: value.id,
-      name: value.name,
+    const formValue = form.getRawValue();
+    const value = {
+      id: formValue.id,
+      name: formValue.name,
       classifier: this.data.classifier,
-      types: value.selectedTypes,
-      path:  value.path,
-      description: value.description
-    };
+      types: formValue.selectedTypes,
+      path:  formValue.path,
+      description: formValue.description
+    }
+    if(this.model.isUpdate){
+      return value;
+    }
+    else {
+      return {
+        ...value,
+        userAccesses: formValue.userAccesses
+      }
+    }
+
   });
 
   private initEmptyForm() {
@@ -57,6 +82,7 @@ export class CreateUpdateCategoryComponent extends SimpleFormDialog implements O
       path: new FormControl(this.data.folderData.path ?? '/', [Validators.required]),
       description: new FormControl(undefined),
       selectedTypes: new FormControl({value: this.isRoot ? undefined : this.data.parent.types, disabled: !this.isRoot}, [Validators.required]),
+      userAccesses: new FormControl(this.userDefaultAssesses)
     });
   }
 

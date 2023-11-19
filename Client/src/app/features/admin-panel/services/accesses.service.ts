@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractRestService } from 'src/app/utilities/services/abstract-rest.service';
 import { Guid } from 'src/app/utilities/types/guid';
+import {UserAccessModel} from "../../shared/models/user-access.model";
 
 @Injectable({ providedIn: 'root' })
 export class AccessesService extends AbstractRestService {
@@ -12,6 +13,10 @@ export class AccessesService extends AbstractRestService {
 
   public updateAccountAccess(updateAccessModels: UpdateAccessModel[]) {
     return this.postItem('accesses/update-accounts-accesses', {accesses: updateAccessModels});
+  }
+
+  public getUserDefaultAccesses(){
+    return this.get<UserAccessModel[]>('accesses/default-users-accesses');
   }
 
   public getAccountsAccesses() {
